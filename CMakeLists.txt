@@ -18,17 +18,12 @@ if(CURL_FOUND)
   list(APPEND AZHA_LIBS ${CURL_LIBRARIES})
 endif()
 
-find_package(BOOST)
-if(BOOST_FOUND)
-  list(APPEND AZHA_INC_DIRS ${BOOST_INCLUDE_DIR})
-  list(APPEND AZHA_LIBS ${BOOST_LIBRARIES})
-endif()
-
 list(APPEND AZHA_SRCS
   ${INC_DIR}/azha.hpp
   ${SRC_DIR}/azha.cpp
   ${INC_DIR}/TwitterParameters.hpp
-  ${SRC_DIR}/TwitterParameters.cpp
+  ${INC_DIR}/Request.hpp
+  ${SRC_DIR}/Request.cpp
 )
 
 include_directories(${AZHA_INC_DIRS})
