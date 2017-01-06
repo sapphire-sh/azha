@@ -3,7 +3,7 @@
 
 #include<functional>
 
-#include "ITwitterParameters.hpp"
+#include "TwitterParameters.hpp"
 
 namespace azha {
   class Account;
@@ -16,9 +16,9 @@ namespace azha {
   namespace Request {
 	  void sendRequest(RequestType requestType,\
 					   const std::string &endpoint,\
-					   const ITwitterParameters &parameters,\
+					   const Parameters::ITwitterParameters &parameters,\
 					   const std::function<void(const int code, const std::string &ret)>);
   }
 }
 
-#endif __AZHA_H__
+#endif //__AZHA_H__
