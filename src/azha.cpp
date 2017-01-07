@@ -15,6 +15,8 @@ namespace azha {
 		CURL* curl;
 		CURLcode res;
 		
+		curl_global_init(CURL_GLOBAL_ALL);
+		
 		curl = curl_easy_init();
 		
 		if(curl) {
@@ -22,13 +24,18 @@ namespace azha {
 			
 			ss << "Authorization: " << oauth->header_string(parameters);
 			
-			struct curl_slist *chunk = NULL;
+			struct curl_slist *chunk = nullptr;
 			chunk = curl_slist_append(chunk, ss.str().c_str());
 			
 			res = curl_easy_setopt(curl, CURLOPT_HTTPHEADER, chunk);
 			
 			curl_easy_setopt(curl, CURLOPT_URL, parameters.url.c_str());
 			curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
+			
+			curl_easy_setopt(curl, CURLOPT_POST, 1);
+			std::unordered_map<std::string, std::string> p;
+			std::cout << parameters.parameter_string(p) << std::endl;
+			curl_easy_setopt(curl, CURLOPT_POSTFIELDS, parameters.parameter_string(p).c_str());
 			
 			res = curl_easy_perform(curl);
 			
