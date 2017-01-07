@@ -12,21 +12,48 @@ set(AZHA_INC_DIRS
   ${SRC_DIR}
 )
 
-find_package(CURL)
-if(CURL_FOUND)
-  list(APPEND AZHA_INC_DIRS ${CURL_INCLUDE_DIR})
-  list(APPEND AZHA_LIBS ${CURL_LIBRARIES})
-endif()
-
 list(APPEND AZHA_SRCS
   ${INC_DIR}/azha.hpp
   ${SRC_DIR}/azha.cpp
   ${INC_DIR}/TwitterParameters.hpp
-  ${INC_DIR}/Request.hpp
-  ${SRC_DIR}/Request.cpp
+	${INC_DIR}/OAuth.hpp
+	${SRC_DIR}/OAuth.cpp
+	${INC_DIR}/base64.hpp
+	${SRC_DIR}/base64.cpp
 )
+
+find_package(CURL)
+if(CURL_FOUND)
+  list(APPEND AZHA_INC_DIRS
+		${CURL_INCLUDE_DIR}
+	)
+  list(APPEND AZHA_LIBS
+		${CURL_LIBRARIES}
+	)
+endif()
+
+find_package(OPENSSL)
+if(OPENSSL_FOUND)
+	list(APPEND AZHA_INC_DIRS
+		${OPENSSL_INCLUDE_DIR}
+	)
+	list(APPEND AZHA_LIBS
+		${OPENSSL_CRYPTO_LIBRARY}
+	)
+endif()
 
 include_directories(${AZHA_INC_DIRS})
 
 add_library(azha ${AZHA_SRCS})
 target_link_libraries(azha ${AZHA_LIBS})
+
+list(APPEND AZHA_CLI_SRCS
+	${CMAKE_CURRENT_SOURCE_DIR}/cli/main.cpp
+)
+
+list(APPEND AZHA_CLI_LIBS
+	azha
+)
+
+add_executable(azha_cli ${AZHA_CLI_SRCS})
+target_link_libraries(azha_cli ${AZHA_CLI_LIBS})

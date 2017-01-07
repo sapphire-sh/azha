@@ -1,27 +1,51 @@
 #ifndef __TWITTER_PARAMETERS__
 #define __TWITTER_PARAMETERS__
 
+#include <map>
 #include <unordered_map>
 #include <string>
 #include <sstream>
 
+#include <curl/curl.h>
+
 namespace azha {
 	namespace Parameters {
+		enum class RequestType {
+			GET,
+			POST
+		};
+		
 		class ITwitterParameters {
 		public:
-			virtual ~ITwitterParameters();
-			std::string composeQueryString() {
-				std::stringstream ss;
-				ss << "?";
+			RequestType request_type;
+			std::string url;
+			
+			std::string parameter_string(std::unordered_map<std::string, std::string>& parameters) {
+				CURL* curl = curl_easy_init();
 				
+				std::map<std::string, std::string> p;
+				
+				for(auto iter = parameters.begin(); iter != parameters.end(); ++iter) {
+					auto f = iter->first.find_last_of("_");
+					std::string k = iter->first.substr(f + 1);
+					if(k != "signature" && k != "secret") {
+						p[iter->first] = iter->second;
+					}
+				}
 				for(auto iter = queries.begin(); iter != queries.end(); ++iter) {
-					ss << iter->first << "=" << iter->second << "&";
+					p[iter->first] = iter->second;
 				}
 				
-				std::string queryString = ss.str();
-				queryString.pop_back();
+				std::stringstream ss;
 				
-				return queryString;
+				for(auto iter = p.begin(); iter != p.end(); ++iter) {
+					ss << iter->first << "=" << curl_easy_escape(curl, iter->second.c_str(), iter->second.size()) << "&";
+				}
+				
+				std::string parameter_string = ss.str();
+				parameter_string.pop_back();
+				
+				return parameter_string;
 			};
 		protected:
 			std::unordered_map<std::string, std::string> queries;
@@ -30,6 +54,10 @@ namespace azha {
 		namespace Statuses {
 			class MentionsTimelineParameters : public ITwitterParameters {
 			public:
+				MentionsTimelineParameters() {
+					request_type = RequestType::GET;
+				}
+				
 				MentionsTimelineParameters& count(const uint64_t _count) {
 					queries["count"] = std::to_string(_count);
 					return *this;
@@ -78,6 +106,9 @@ namespace azha {
 			class UpdateParameters : public ITwitterParameters {
 			public:
 				UpdateParameters(const std::string& _status) {
+					request_type = RequestType::POST;
+					url = "https://api.twitter.com/1.1/statuses/update.json";
+					
 					status(_status);
 				}
 				
