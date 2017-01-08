@@ -16,6 +16,7 @@ list(APPEND AZHA_SRCS
   ${INC_DIR}/azha.hpp
   ${SRC_DIR}/azha.cpp
   ${INC_DIR}/TwitterParameters.hpp
+  ${SRC_DIR}/TwitterParameters.cpp
 	${INC_DIR}/OAuth.hpp
 	${SRC_DIR}/OAuth.cpp
 	${INC_DIR}/base64.hpp

@@ -13,8 +13,10 @@ namespace azha {
 	OAuth::OAuth(std::string _consumer_key, std::string _consumer_secret, std::string _access_token, std::string _access_token_secret) {
 		oauth_consumer_key(_consumer_key);
 		oauth_consumer_secret(_consumer_secret);
-		oauth_token(_access_token);
-		oauth_token_secret(_access_token_secret);
+		if(_access_token != "" && _access_token_secret != "") {
+			oauth_token(_access_token);
+			oauth_token_secret(_access_token_secret);
+		}
 		
 		oauth_callback("oob");
 		oauth_nonce(generate_nonce());
@@ -55,7 +57,7 @@ namespace azha {
 		std::stringstream ss;
 		
 		srand(generate_timestamp());
-		for (int i = 0; i < 64; ++i) {
+		for (int i = 0; i < 32; ++i) {
 			ss << characters[rand() % (sizeof(characters) - 1)];
 		}
 		
@@ -70,6 +72,7 @@ namespace azha {
 		std::string key_str = signing_key();
 		char key[key_str.size() + 1];
 		strcpy(key, key_str.c_str());
+		
 		std::string data_str = signature_base_string(parameters);
 		char data[data_str.size() + 1];
 		strcpy(data, data_str.c_str());
@@ -87,7 +90,6 @@ namespace azha {
 		HMAC_Final(&ctx, result, &len);
 		HMAC_CTX_cleanup(&ctx);
 		
-		
 		std::string signature = base64_encode(result, len);
 		
 		free(result);
@@ -104,8 +106,9 @@ namespace azha {
 		
 		std::stringstream ss;
 		
-		ss << (parameters.request_type == Parameters::RequestType::POST ? "POST&" : "GET&");
-		ss << curl_easy_escape(curl, parameters.url.c_str(), parameters.url.size()) << "&";
+		ss << (parameters.request_type() == Parameters::RequestType::POST ? "POST&" : "GET&");
+		std::string url = parameters.url();
+		ss << curl_easy_escape(curl, url.c_str(), url.size()) << "&";
 		
 		std::string p_str = parameter_string(parameters);
 		ss << curl_easy_escape(curl, p_str.c_str(), p_str.size());
