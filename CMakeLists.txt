@@ -14,11 +14,11 @@ set(AZHA_INC_DIRS
 
 list(APPEND AZHA_SRCS
   ${INC_DIR}/azha.hpp
-  ${SRC_DIR}/azha.cpp
-  ${INC_DIR}/TwitterParameters.hpp
-  ${SRC_DIR}/TwitterParameters.cpp
-	${INC_DIR}/OAuth.hpp
-	${SRC_DIR}/OAuth.cpp
+	${INC_DIR}/client.hpp
+	${SRC_DIR}/client.cpp
+	${INC_DIR}/oauth.hpp
+	${SRC_DIR}/oauth.cpp
+  ${INC_DIR}/parameters.hpp
 	${INC_DIR}/base64.hpp
 	${SRC_DIR}/base64.cpp
 )

@@ -6,7 +6,7 @@
 #include <openssl/hmac.h>
 
 #include "base64.hpp"
-#include "OAuth.hpp"
+#include "oauth.hpp"
 
 namespace azha {
 	OAuth::OAuth(std::string _consumer_key, std::string _consumer_secret) : OAuth(_consumer_key, _consumer_secret, "", "") {}
@@ -25,10 +25,10 @@ namespace azha {
 		oauth_version("1.0");
 	}
 	
-	const std::string OAuth::header_string(Parameters::ITwitterParameters& parameters) {
+	const std::string OAuth::header_string(const parameters::RequestMethod &method, const std::string &url, const parameters::RequestParams &parameters) {
 		oauth_nonce(generate_nonce());
 		oauth_timestamp(generate_timestamp());
-		oauth_signature(calculate_signature(parameters));
+		oauth_signature(calculate_signature(method, url, parameters));
 		
 		CURL* curl = curl_easy_init();
 		
@@ -68,12 +68,12 @@ namespace azha {
 		return std::time(0);
 	}
 	
-	const std::string OAuth::calculate_signature(Parameters::ITwitterParameters& parameters) {
+	const std::string OAuth::calculate_signature(const parameters::RequestMethod &method, const std::string &url, const parameters::RequestParams &parameters) {
 		std::string key_str = signing_key();
 		char key[key_str.size() + 1];
 		strcpy(key, key_str.c_str());
 		
-		std::string data_str = signature_base_string(parameters);
+		std::string data_str = signature_base_string(method, url, parameters);
 		char data[data_str.size() + 1];
 		strcpy(data, data_str.c_str());
 		
@@ -97,17 +97,40 @@ namespace azha {
 		return signature;
 	}
 	
-	const std::string OAuth::parameter_string(Parameters::ITwitterParameters& parameters) {
-		return parameters.parameter_string(this->parameters);
+	const std::string OAuth::parameter_string(const parameters::RequestParams &parameters) {
+		CURL* curl = curl_easy_init();
+		
+		std::map<std::string, std::string> p;
+		
+		for(auto iter = this->parameters.begin(); iter != this->parameters.end(); ++iter) {
+			auto f = iter->first.find_last_of("_");
+			std::string k = iter->first.substr(f + 1);
+			if(k != "signature" && k != "secret") {
+				p[iter->first] = iter->second;
+			}
+		}
+		for(auto iter = parameters.begin(); iter != parameters.end(); ++iter) {
+			p[iter->first] = iter->second;
+		}
+		
+		std::stringstream ss;
+		
+		for(auto iter = p.begin(); iter != p.end(); ++iter) {
+			ss << iter->first << "=" << curl_easy_escape(curl, iter->second.c_str(), iter->second.size()) << "&";
+		}
+		
+		std::string parameter_string = ss.str();
+		parameter_string.pop_back();
+		
+		return parameter_string;
 	}
 	
-	const std::string OAuth::signature_base_string(Parameters::ITwitterParameters& parameters) {
+	const std::string OAuth::signature_base_string(const parameters::RequestMethod &method, const std::string &url, const parameters::RequestParams &parameters) {
 		CURL* curl = curl_easy_init();
 		
 		std::stringstream ss;
 		
-		ss << (parameters.request_type() == Parameters::RequestType::POST ? "POST&" : "GET&");
-		std::string url = parameters.url();
+		ss << (method == parameters::RequestMethod::POST ? "POST&" : "GET&");
 		ss << curl_easy_escape(curl, url.c_str(), url.size()) << "&";
 		
 		std::string p_str = parameter_string(parameters);

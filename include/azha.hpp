@@ -1,29 +1,23 @@
-#ifndef __AZHA_H__
-#define __AZHA_H__
-
-#include "OAuth.hpp"
+#include "client.hpp"
 
 namespace azha {
-	class TwitterClient {
+	typedef std::function<void(const int code, const std::string ret)> CallbackFunc;
+	typedef std::unordered_map<std::string, std::string> RequestParams;
+	
+	class azha {
 	public:
-		struct MemoryStruct {
-			char *memory;
-			size_t size;
-		};
+		azha(std::string _consumer_key, std::string _consumer_secret) {
+			_client = new Client(_consumer_key, _consumer_secret);
+		}
 		
-		TwitterClient(std::string _consumer_key, std::string _consumer_secret);
-		TwitterClient(std::string _consumer_key, std::string _consumer_secret, std::string _access_token, std::string _access_token_secret);
+		~azha() {
+			delete _client;
+		}
 		
-		void request_token(const std::function<void(const int code, const std::string &ret)>& callback);
-		
-		void access_token(const std::function<void(const int code, const std::string &ret)>& callback);
-		
-		void request(Parameters::ITwitterParameters &parameters, const std::function<void(const int code, const std::string &ret)>& callback);
+		Client * const client() {
+			return _client;
+		}
 	private:
-		OAuth* _oauth;
-		
-		static size_t write_callback(void *contents, size_t size, size_t nmemb, void *userp);
+		Client *_client;
 	};
 }
-
-#endif //__AZHA_H__
