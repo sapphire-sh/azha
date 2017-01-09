@@ -16,24 +16,30 @@ namespace azha {
 			size_t size;
 		};
 		
-		Client(std::string _consumer_key, std::string _consumer_secret);
-		Client(std::string _consumer_key, std::string _consumer_secret, std::string _access_token, std::string _access_token_secret);
+		static Client& instance() {
+			static Client _instance;
+			return _instance;
+		}
+		
+		void consumer_key(const std::string &_consumer_key, const std::string &_consumer_secret);
+		void access_token(const std::string &_access_token, const std::string &_access_token_secret);
 		
 		~Client() {
 			delete _oauth;
 		}
 		
-		void request_token(const CallbackFunc &callback);
-		void access_token(const CallbackFunc &callback);
-		
 		void request(const parameters::ITwitterParameters &parameters, const CallbackFunc &callback);
 		void request(const parameters::RequestMethod &method, const std::string &url, const parameters::RequestParams &parameters, const CallbackFunc &callback);
-		
-		static std::unordered_map<std::string, std::string> parse_query_string(const std::string &query_string);
 	private:
+		Client() {
+			_oauth = new OAuth();
+		}
+		
 		OAuth *_oauth;
 		
 		static size_t write_callback(void *contents, size_t size, size_t nmemb, void *userp);
+		
+		static std::unordered_map<std::string, std::string> parse_query_string(const std::string &query_string);
 	};
 }
 

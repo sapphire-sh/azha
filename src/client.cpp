@@ -10,18 +10,14 @@
 #include "parameters.hpp"
 
 namespace azha {
-	Client::Client(std::string _consumer_key, std::string _consumer_secret) : Client(_consumer_key, _consumer_secret, "", "") {}
-	Client::Client(std::string _consumer_key, std::string _consumer_secret, std::string _access_token, std::string _access_token_secret) {
-		_oauth = new OAuth(_consumer_key, _consumer_secret, _access_token, _access_token_secret);
+	void Client::consumer_key(const std::string &_consumer_key, const std::string &_consumer_secret) {
+		_oauth->oauth_consumer_key(_consumer_key);
+		_oauth->oauth_consumer_secret(_consumer_secret);
 	}
 	
-	void Client::request_token(const CallbackFunc &callback) {
-		parameters::OAuth::RequestTokenParameters parameters;
-		request(parameters, callback);
-	}
-	
-	void Client::access_token(const CallbackFunc &callback) {
-		
+	void Client::access_token(const std::string &_access_token, const std::string &_access_token_secret) {
+		_oauth->oauth_token(_access_token);
+		_oauth->oauth_token_secret(_access_token_secret);
 	}
 	
 	void Client::request(const parameters::ITwitterParameters &parameters, const CallbackFunc &callback) {
@@ -71,7 +67,18 @@ namespace azha {
 			}
 			else {
 				std::string response(data.memory);
-				callback(200, parameters::RequestParams());
+				
+				char *content_type;
+				curl_easy_getinfo(curl, CURLINFO_CONTENT_TYPE, &content_type);
+				
+				if(callback != nullptr) {
+					if(std::string(content_type) == "text/html;charset=utf-8") {
+						callback(200, parse_query_string(response));
+					}
+					else {
+						callback(200, parameters::RequestParams());
+					}
+				}
 			}
 			
 			curl_easy_cleanup(curl);
@@ -80,7 +87,9 @@ namespace azha {
 			free(data.memory);
 		}
 		else {
-			callback(-1, parameters::RequestParams());
+			if(callback != nullptr) {
+				callback(-1, parameters::RequestParams());
+			}
 		}
 		
 		curl_global_cleanup();

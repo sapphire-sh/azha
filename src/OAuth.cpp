@@ -10,16 +10,7 @@
 #include "oauth.hpp"
 
 namespace azha {
-	OAuth::OAuth(std::string _consumer_key, std::string _consumer_secret) : OAuth(_consumer_key, _consumer_secret, "", "") {}
-	OAuth::OAuth(std::string _consumer_key, std::string _consumer_secret, std::string _access_token, std::string _access_token_secret) {
-		oauth_consumer_key(_consumer_key);
-		oauth_consumer_secret(_consumer_secret);
-		if(_access_token != "" && _access_token_secret != "") {
-			oauth_token(_access_token);
-			oauth_token_secret(_access_token_secret);
-		}
-		
-		oauth_callback("oob");
+	OAuth::OAuth() {
 		oauth_nonce(generate_nonce());
 		oauth_signature_method("HMAC-SHA1");
 		oauth_timestamp(generate_timestamp());
@@ -38,10 +29,17 @@ namespace azha {
 		ss << "OAuth ";
 		
 		for(auto iter = this->parameters.begin(); iter != this->parameters.end(); ++iter) {
-			auto f = iter->first.find_last_of("_");
-			std::string k = iter->first.substr(f + 1);
-			if(k != "secret") {
+			auto found = iter->first.find_last_of("_");
+			std::string token = iter->first.substr(found + 1);
+			if(token != "secret") {
 			ss << iter->first << "=\"" << curl_easy_escape(curl, iter->second.c_str(), iter->second.size()) << "\", ";
+			}
+		}
+		for(auto iter = parameters.begin(); iter != parameters.end(); ++iter) {
+			auto found = iter->first.find_first_of("_");
+			std::string token = iter->first.substr(0, found);
+			if(token == "oauth") {
+				ss << iter->first << "=\"" << curl_easy_escape(curl, iter->second.c_str(), iter->second.size()) << "\", ";
 			}
 		}
 		

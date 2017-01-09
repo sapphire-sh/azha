@@ -9,13 +9,8 @@
 namespace azha {
 	class OAuth {
 	public:
-		OAuth(std::string _consumer_key, std::string _consumer_secret);
-		OAuth(std::string _consumer_key, std::string _consumer_secret, std::string _access_token, std::string _access_token_secret);
+		OAuth();
 		
-		OAuth& oauth_callback(const std::string &_oauth_callback) {
-			parameters["oauth_callback"] = _oauth_callback;
-			return *this;
-		}
 		OAuth& oauth_consumer_key(const std::string &_oauth_consumer_key) {
 			parameters["oauth_consumer_key"] = _oauth_consumer_key;
 			return *this;
@@ -57,9 +52,6 @@ namespace azha {
 			return *this;
 		}
 		
-		const std::string &oauth_callback() {
-			return parameters["oauth_callback"];
-		}
 		const std::string &oauth_consumer_key() {
 			return parameters["oauth_consumer_key"];
 		}
