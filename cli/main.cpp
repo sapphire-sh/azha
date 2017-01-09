@@ -2,8 +2,8 @@
 
 #include "azha.hpp"
 
-void request_token_callback(const int code, const std::string& response) {
-	std::cout << response << std::endl;
+void request_token_callback(const int code, const std::unordered_map<std::string, std::string>& response) {
+//	std::cout << response << std::endl;
 }
 
 int main() {

@@ -7,7 +7,7 @@
 #include "parameters.hpp"
 
 namespace azha {
-	typedef std::function<void(const int code, const std::string ret)> CallbackFunc;
+	typedef std::function<void(const int code, const std::unordered_map<std::string, std::string> ret)> CallbackFunc;
 	
 	class Client {
 	public:
@@ -28,6 +28,8 @@ namespace azha {
 		
 		void request(const parameters::ITwitterParameters &parameters, const CallbackFunc &callback);
 		void request(const parameters::RequestMethod &method, const std::string &url, const parameters::RequestParams &parameters, const CallbackFunc &callback);
+		
+		static std::unordered_map<std::string, std::string> parse_query_string(const std::string &query_string);
 	private:
 		OAuth *_oauth;
 		

@@ -1,7 +1,6 @@
 #ifndef __PARAMETERS_H__
 #define __PARAMETERS_H__
 
-#include <map>
 #include <unordered_map>
 #include <string>
 

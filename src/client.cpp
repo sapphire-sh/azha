@@ -1,6 +1,8 @@
 #include <iostream>
 #include <sstream>
+#include <string>
 #include <cstdlib>
+#include <unordered_map>
 
 #include <curl/curl.h>
 
@@ -65,20 +67,36 @@ namespace azha {
 			
 			if(res != CURLE_OK) {
 				std::cout << "curl_easy_perform() failed: " << curl_easy_strerror(res) << std::endl;
-				callback(-1, "");
+				callback(-1, parameters::RequestParams());
 			}
 			else {
 				std::string response(data.memory);
-				callback(200, response);
+				callback(200, parameters::RequestParams());
 			}
 			
 			curl_easy_cleanup(curl);
 			curl_slist_free_all(chunk);
 			
 			free(data.memory);
-			
-			curl_global_cleanup();
 		}
+		else {
+			callback(-1, parameters::RequestParams());
+		}
+		
+		curl_global_cleanup();
+	}
+	
+	std::unordered_map<std::string, std::string> Client::parse_query_string(const std::string &query_string) {
+		std::string key, value;
+		std::stringstream ss;
+		ss << query_string;
+		std::unordered_map<std::string, std::string> result;
+		
+		while(getline(ss, key, '=') && getline(ss, value, '&')) {
+			result[key] = value;
+		}
+		
+		return result;
 	}
 	
 	size_t Client::write_callback(void *contents, size_t size, size_t nmemb, void *userp) {
