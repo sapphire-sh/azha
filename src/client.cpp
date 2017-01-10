@@ -50,11 +50,10 @@ namespace azha {
 			curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
 			curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
 			
+			std::string parameter_string;
 			if(method == parameters::RequestMethod::POST) {
-				std::string parameter_string = Client::parameter_string(parameters);
-				std::cout << parameter_string << "\n";
-				curl_easy_setopt(curl, CURLOPT_POSTFIELDS, parameter_string.c_str()); // ?
-//				curl_easy_setopt(curl, CURLOPT_POSTFIELDS, "status=hello%2C%20world%21");
+				parameter_string = Client::parameter_string(parameters);
+				curl_easy_setopt(curl, CURLOPT_POSTFIELDS, parameter_string.c_str());
 			}
 			
 			curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_callback);
