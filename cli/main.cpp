@@ -28,14 +28,20 @@ void request_token_callback(const int code, const std::unordered_map<std::string
 }
 
 int main() {
-	std::string consumer_key = "IQKbtAYlXLripLGPWd0HUA";
-	std::string consumer_secret = "GgDYlkSvaPxGxC4X8liwpUoqKwwr3lCADbz8A7ADU";
+	std::string consumer_key = "bFGL1R2mLMdlknzEZEuEKqwlk";//IQKbtAYlXLripLGPWd0HUA";
+	std::string consumer_secret = "DqpROputhQlx2wuiDbANEgB893dDxm61ZNHAyNUz9pYZkbG6kF";//GgDYlkSvaPxGxC4X8liwpUoqKwwr3lCADbz8A7ADU";
+	std::string access_token = "529303031-ze9rALRIGgbxhyM8gwB9plIuhlqehosuXDmMlXNZ";//529303031-6xsglQedd3VvSrwnSkU6CBHoLhPYXDKXIZehg327";
+	std::string access_token_secret = "vz6fXJDTNpLw5rfS1fhndkc8KSXLoxJBtdt06BA3HqOMH";//dLi41NFr5XQRzX3yWmP2tJa1KFrhDw5Y4gkQGuxEyAsrO";
 	
 	azha::Client::instance().consumer_key(consumer_key, consumer_secret);
+	azha::Client::instance().access_token(access_token, access_token_secret);
 	
-	azha::parameters::OAuth::RequestTokenParameters p;
-	p.oauth_callback("oob");
-	azha::Client::instance().request(p, request_token_callback);
+//	azha::parameters::OAuth::RequestTokenParameters p;
+//	p.oauth_callback("oob");
+//	azha::Client::instance().request(p, request_token_callback);
+	azha::parameters::Statuses::UpdateParameters p;
+	p.status("hello, world!");
+	azha::Client::instance().request(p, nullptr);
 	
 	return 0;
 }

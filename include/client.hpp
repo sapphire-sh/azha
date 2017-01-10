@@ -39,7 +39,8 @@ namespace azha {
 		
 		static size_t write_callback(void *contents, size_t size, size_t nmemb, void *userp);
 		
-		static std::unordered_map<std::string, std::string> parse_query_string(const std::string &query_string);
+		static const std::unordered_map<std::string, std::string> parse_query_string(const std::string &query_string);
+		static const std::string parameter_string(const parameters::RequestParams &parameters);
 	};
 }
 

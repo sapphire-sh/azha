@@ -51,9 +51,10 @@ namespace azha {
 			curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
 			
 			if(method == parameters::RequestMethod::POST) {
-				std::unordered_map<std::string, std::string> p;
-				std::string parameter_string = _oauth->parameter_string(p);
-				curl_easy_setopt(curl, CURLOPT_POSTFIELDS, parameter_string.c_str());
+				std::string parameter_string = Client::parameter_string(parameters);
+				std::cout << parameter_string << "\n";
+				curl_easy_setopt(curl, CURLOPT_POSTFIELDS, parameter_string.c_str()); // ?
+//				curl_easy_setopt(curl, CURLOPT_POSTFIELDS, "status=hello%2C%20world%21");
 			}
 			
 			curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_callback);
@@ -67,6 +68,7 @@ namespace azha {
 			}
 			else {
 				std::string response(data.memory);
+				std::cout << response << "\n";
 				
 				char *content_type;
 				curl_easy_getinfo(curl, CURLINFO_CONTENT_TYPE, &content_type);
@@ -95,7 +97,7 @@ namespace azha {
 		curl_global_cleanup();
 	}
 	
-	std::unordered_map<std::string, std::string> Client::parse_query_string(const std::string &query_string) {
+	const std::unordered_map<std::string, std::string> Client::parse_query_string(const std::string &query_string) {
 		std::string key, value;
 		std::stringstream ss;
 		ss << query_string;
@@ -106,6 +108,31 @@ namespace azha {
 		}
 		
 		return result;
+	}
+	
+	const std::string Client::parameter_string(const parameters::RequestParams &parameters) {
+		CURL* curl = curl_easy_init();
+		
+		std::unordered_map<std::string, std::string> p;
+		
+		for(auto iter = parameters.begin(); iter != parameters.end(); ++iter) {
+//			auto f = iter->first.find_last_of("_");
+//			std::string k = iter->first.substr(f + 1);
+//			if(k != "signature" && k != "secret") {
+				p[iter->first] = iter->second;
+//			}
+		}
+		
+		std::stringstream ss;
+		
+		for(auto iter = p.begin(); iter != p.end(); ++iter) {
+			ss << iter->first << "=" << curl_easy_escape(curl, iter->second.c_str(), iter->second.size()) << "&";
+		}
+		
+		std::string parameter_string = ss.str();
+		parameter_string.pop_back();
+		
+		return parameter_string;
 	}
 	
 	size_t Client::write_callback(void *contents, size_t size, size_t nmemb, void *userp) {
