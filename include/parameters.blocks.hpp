@@ -6,21 +6,21 @@
 namespace azha {
 	namespace parameters {
 		namespace Blocks {
-			class Ids : public ITwitterParameters {
+			class IdsParameter : public ITwitterParameters {
 				METHOD(RequestMethod::GET);
 				URL("https://api.twitter.com/1.1/blocks/ids.json");
 				
-				PARAMETER_BOOL(Ids, stringify_ids);
-				PARAMETER_UINT64(Ids, cursor);
+				PARAMETER_BOOL(IdsParameter, stringify_ids);
+				PARAMETER_UINT64(IdsParameter, cursor);
 			};
 			
-			class List : public ITwitterParameters {
+			class ListParameter : public ITwitterParameters {
 				METHOD(RequestMethod::GET);
 				URL("https://api.twitter.com/1.1/blocks/list.json");
 				
-				PARAMETER_BOOL(Ids, include_entities);
-				PARAMETER_BOOL(Ids, skip_status);
-				PARAMETER_UINT64(Ids, cursor);
+				PARAMETER_BOOL(ListParameter, include_entities);
+				PARAMETER_BOOL(ListParameter, skip_status);
+				PARAMETER_UINT64(ListParameter, cursor);
 			};
 		}
 	}

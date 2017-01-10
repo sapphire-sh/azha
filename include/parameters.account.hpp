@@ -11,13 +11,13 @@ namespace azha {
 				URL("https://api.twitter.com/1.1/account/settings.json");
 			};
 			
-			class VerifyCredentials : public ITwitterParameters {
+			class VerifyCredentialsParameter : public ITwitterParameters {
 				METHOD(RequestMethod::GET);
 				URL("https://api.twitter.com/1.1/account/verify_credentials.json");
 				
-				PARAMETER_BOOL(VerifyCredentials, include_entities);
-				PARAMETER_BOOL(VerifyCredentials, skip_status);
-				PARAMETER_BOOL(VerifyCredentials, include_email);
+				PARAMETER_BOOL(VerifyCredentialsParameter, include_entities);
+				PARAMETER_BOOL(VerifyCredentialsParameter, skip_status);
+				PARAMETER_BOOL(VerifyCredentialsParameter, include_email);
 			};
 		}
 	}

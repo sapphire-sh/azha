@@ -1,0 +1,32 @@
+#ifndef __PARAMETERS_HELP_H__
+#define __PARAMETERS_HELP_H__
+
+#include "parameters.interface.hpp"
+
+namespace azha {
+	namespace parameters {
+		namespace Help {
+			class ConfigurationParameter : public ITwitterParameters {
+				METHOD(RequestMethod::GET);
+				URL("https://api.twitter.com/1.1/help/configuration.json");
+			};
+			
+			class LanguagesParameter : public ITwitterParameters {
+				METHOD(RequestMethod::GET);
+				URL("https://api.twitter.com/1.1/help/languages.json");
+			};
+			
+			class PrivacyParameter : public ITwitterParameters {
+				METHOD(RequestMethod::GET);
+				URL("https://api.twitter.com/1.1/help/privacy.json");
+			};
+			
+			class TosParameter : public ITwitterParameters {
+				METHOD(RequestMethod::GET);
+				URL("https://api.twitter.com/1.1/help/tos.json");
+			};
+		}
+	}
+}
+
+#endif // __PARAMETERS_HELP_H__

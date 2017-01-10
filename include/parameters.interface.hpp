@@ -2,6 +2,7 @@
 #define __PARAMETERS_INTERFACE_H__
 
 #include <unordered_map>
+#include <sstream>
 #include <string>
 
 #define METHOD(x)\
