@@ -17,21 +17,8 @@ namespace azha {
 					return _url;
 				}
 				
-				RequestTokenParameters& oauth_callback(const std::string &_oauth_callback) {
-					parameters["oauth_callback"] = _oauth_callback;
-					return *this;
-				}
-				RequestTokenParameters& x_auth_access_type(const std::string &_x_auth_access_type) {
-					parameters["x_auth_access_type"] = _x_auth_access_type;
-					return *this;
-				}
-				
-				const std::string& oauth_callback() {
-					return parameters["oauth_callback"];
-				}
-				const std::string& x_auth_access_type() {
-					return parameters["x_auth_access_type"];
-				}
+				PARAMETER(RequestTokenParameters, std::string, oauth_callback);
+				PARAMETER(RequestTokenParameters, std::string, x_auth_access_type);
 			};
 			
 			class AccessTokenParameters : public ITwitterParameters {

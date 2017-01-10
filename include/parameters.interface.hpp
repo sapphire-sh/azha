@@ -4,6 +4,15 @@
 #include <unordered_map>
 #include <string>
 
+#define PARAMETER(x, y, z)\
+	x& z(const y &_z) {\
+		parameters["z"] = _z;\
+		return *this;\
+	}\
+	const y& z() {\
+		return parameters["z"];\
+	}
+
 namespace azha {
 	namespace parameters {
 		typedef std::unordered_map<std::string, std::string> RequestParams;
