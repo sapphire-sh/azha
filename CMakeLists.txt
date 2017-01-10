@@ -4,9 +4,6 @@ project(azha C CXX)
 set(SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 set(INC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
 set(AZHA_INC_DIRS
   ${INC_DIR}
   ${SRC_DIR}
@@ -53,6 +50,7 @@ include_directories(${AZHA_INC_DIRS})
 
 add_library(azha ${AZHA_SRCS})
 target_link_libraries(azha ${AZHA_LIBS})
+target_compile_features(azha PUBLIC cxx_auto_type cxx_range_for cxx_nullptr)
 
 list(APPEND AZHA_CLI_SRCS
 	${CMAKE_CURRENT_SOURCE_DIR}/cli/main.cpp
