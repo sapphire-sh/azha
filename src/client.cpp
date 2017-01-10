@@ -3,13 +3,22 @@
 #include <string>
 #include <cstdlib>
 #include <unordered_map>
+#include <future>
 
 #include <curl/curl.h>
 
 #include "client.hpp"
-#include "parameters.hpp"
 
 namespace azha {
+	Client::Client()
+	  : _oauth(new OAuth()) {
+		curl_global_init(CURL_GLOBAL_ALL);
+	}
+
+	Client::~Client() {
+		curl_global_cleanup();
+	}
+	
 	void Client::consumer_key(const std::string &_consumer_key, const std::string &_consumer_secret) {
 		_oauth->oauth_consumer_key(_consumer_key);
 		_oauth->oauth_consumer_secret(_consumer_secret);
@@ -20,20 +29,22 @@ namespace azha {
 		_oauth->oauth_token_secret(_access_token_secret);
 	}
 	
-	void Client::request(const parameters::ITwitterParameters &parameters, const CallbackFunc &callback) {
-		request(parameters.request_method(), parameters.url(), parameters.parameters, callback);
+	std::future<Client::ResultType> Client::request(const parameters::ITwitterParameters &parameters) {
+		return request(parameters.request_method(), parameters.url(), parameters.parameters);
 	}
 	
-	void Client::request(const parameters::RequestMethod &method, const std::string &url, const parameters::RequestParams &parameters, const CallbackFunc &callback) {
+	std::future<Client::ResultType> Client::request(const parameters::RequestMethod &method, const std::string &url, const parameters::RequestParams &parameters) {
+		return std::async(std::launch::async, &Client::request_internal, this, method, url, parameters);
+	}
+
+	Client::ResultType Client::request_internal(const parameters::RequestMethod &method, const std::string &url, const parameters::RequestParams &parameters) {
 		CURL* curl;
 		CURLcode res;
 		
-		struct MemoryStruct data;
-		
-		data.memory = (char*)malloc(1);
+    struct MemoryStruct data;
+
+		data.memory = reinterpret_cast<char*>(malloc(1));
 		data.size = 0;
-		
-		curl_global_init(CURL_GLOBAL_ALL);
 		
 		curl = curl_easy_init();
 		
@@ -62,8 +73,9 @@ namespace azha {
 			res = curl_easy_perform(curl);
 			
 			if(res != CURLE_OK) {
-				std::cout << "curl_easy_perform() failed: " << curl_easy_strerror(res) << std::endl;
-				callback(-1, parameters::RequestParams());
+				ss.str("curl_easy_perform() failed: ");
+				ss << curl_easy_strerror(res);
+				throw new RequestFailedException(ss.str());
 			}
 			else {
 				std::string response(data.memory);
@@ -71,14 +83,12 @@ namespace azha {
 				
 				char *content_type;
 				curl_easy_getinfo(curl, CURLINFO_CONTENT_TYPE, &content_type);
-				
-				if(callback != nullptr) {
-					if(std::string(content_type) == "text/html;charset=utf-8") {
-						callback(200, parse_query_string(response));
-					}
-					else {
-						callback(200, parameters::RequestParams());
-					}
+
+				if(std::string(content_type) == "text/html;charset=utf-8") {
+					return parse_query_string(response);
+				}
+				else {
+					return parameters::RequestParams();
 				}
 			}
 			
@@ -88,12 +98,8 @@ namespace azha {
 			free(data.memory);
 		}
 		else {
-			if(callback != nullptr) {
-				callback(-1, parameters::RequestParams());
-			}
+			throw new RequestFailedException("curl init failed");
 		}
-		
-		curl_global_cleanup();
 	}
 	
 	const std::unordered_map<std::string, std::string> Client::parse_query_string(const std::string &query_string) {
@@ -132,7 +138,7 @@ namespace azha {
 	
 	size_t Client::write_callback(void *contents, size_t size, size_t nmemb, void *userp) {
 		size_t realsize = size * nmemb;
-		struct MemoryStruct *mem = (struct MemoryStruct *)userp;
+		struct MemoryStruct *mem = reinterpret_cast<struct MemoryStruct *>(userp);
 		
 		mem->memory = (char*)realloc(mem->memory, mem->size + realsize + 1);
 		if(mem->memory == NULL) {
