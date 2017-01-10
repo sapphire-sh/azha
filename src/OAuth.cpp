@@ -28,18 +28,18 @@ namespace azha {
 		
 		ss << "OAuth ";
 		
-		for(auto iter = this->parameters.begin(); iter != this->parameters.end(); ++iter) {
-			auto found = iter->first.find_last_of("_");
-			std::string token = iter->first.substr(found + 1);
+		for(auto&& iter : this->parameters) {
+			auto found = iter.first.find_last_of("_");
+			std::string token = iter.first.substr(found + 1);
 			if(token != "secret") {
-			ss << iter->first << "=\"" << curl_easy_escape(curl, iter->second.c_str(), iter->second.size()) << "\", ";
+			ss << iter.first << "=\"" << curl_easy_escape(curl, iter.second.c_str(), iter.second.size()) << "\", ";
 			}
 		}
-		for(auto iter = parameters.begin(); iter != parameters.end(); ++iter) {
-			auto found = iter->first.find_first_of("_");
-			std::string token = iter->first.substr(0, found);
+		for(auto&& iter : parameters) {
+			auto found = iter.first.find_first_of("_");
+			std::string token = iter.first.substr(0, found);
 			if(token == "oauth") {
-				ss << iter->first << "=\"" << curl_easy_escape(curl, iter->second.c_str(), iter->second.size()) << "\", ";
+				ss << iter.first << "=\"" << curl_easy_escape(curl, iter.second.c_str(), iter.second.size()) << "\", ";
 			}
 		}
 		
@@ -101,21 +101,21 @@ namespace azha {
 		
 		std::map<std::string, std::string> p;
 		
-		for(auto iter = this->parameters.begin(); iter != this->parameters.end(); ++iter) {
-			auto f = iter->first.find_last_of("_");
-			std::string k = iter->first.substr(f + 1);
+		for(auto&& iter : this->parameters) {
+			auto f = iter.first.find_last_of("_");
+			std::string k = iter.first.substr(f + 1);
 			if(k != "signature" && k != "secret") {
-				p[iter->first] = iter->second;
+				p[iter.first] = iter.second;
 			}
 		}
-		for(auto iter = parameters.begin(); iter != parameters.end(); ++iter) {
-			p[iter->first] = iter->second;
+		for(auto&& iter : parameters) {
+			p[iter.first] = iter.second;
 		}
 		
 		std::stringstream ss;
 		
-		for(auto iter = p.begin(); iter != p.end(); ++iter) {
-			ss << iter->first << "=" << curl_easy_escape(curl, iter->second.c_str(), iter->second.size()) << "&";
+		for(auto&& iter : p) {
+			ss << iter.first << "=" << curl_easy_escape(curl, iter.second.c_str(), iter.second.size()) << "&";
 		}
 		
 		std::string parameter_string = ss.str();

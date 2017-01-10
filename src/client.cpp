@@ -114,18 +114,14 @@ namespace azha {
 		
 		std::unordered_map<std::string, std::string> p;
 		
-		for(auto iter = parameters.begin(); iter != parameters.end(); ++iter) {
-//			auto f = iter->first.find_last_of("_");
-//			std::string k = iter->first.substr(f + 1);
-//			if(k != "signature" && k != "secret") {
-				p[iter->first] = iter->second;
-//			}
+		for(auto&& iter : parameters) {
+			p[iter.first] = iter.second;
 		}
 		
 		std::stringstream ss;
 		
-		for(auto iter = p.begin(); iter != p.end(); ++iter) {
-			ss << iter->first << "=" << curl_easy_escape(curl, iter->second.c_str(), iter->second.size()) << "&";
+		for(auto&& iter : p) {
+			ss << iter.first << "=" << curl_easy_escape(curl, iter.second.c_str(), iter.second.size()) << "&";
 		}
 		
 		std::string parameter_string = ss.str();
