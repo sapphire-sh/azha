@@ -21,6 +21,9 @@ list(APPEND AZHA_SRCS
   ${INC_DIR}/parameters.hpp
   ${INC_DIR}/parameters.interface.hpp
   ${INC_DIR}/parameters.oauth.hpp
+	${INC_DIR}/parameters.account.hpp
+	${INC_DIR}/parameters.application.hpp
+	${INC_DIR}/parameters.blocks.hpp
   ${INC_DIR}/parameters.statuses.hpp
 	${INC_DIR}/base64.hpp
 	${SRC_DIR}/base64.cpp
