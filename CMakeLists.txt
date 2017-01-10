@@ -29,7 +29,7 @@ list(APPEND AZHA_SRCS
 	${SRC_DIR}/base64.cpp
 )
 
-find_package(CURL)
+find_package(CURL REQUIRED)
 if(CURL_FOUND)
   list(APPEND AZHA_INC_DIRS
 		${CURL_INCLUDE_DIR}
@@ -39,7 +39,7 @@ if(CURL_FOUND)
 	)
 endif()
 
-find_package(OPENSSL)
+find_package(OPENSSL REQUIRED)
 if(OPENSSL_FOUND)
 	list(APPEND AZHA_INC_DIRS
 		${OPENSSL_INCLUDE_DIR}
