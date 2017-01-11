@@ -6,27 +6,29 @@
 namespace azha {
 	namespace parameters {
 		namespace Followers {
-			class IdsParameter : public ITwitterParameters {
+			class IdsParameters : public ITwitterParameters {
+			public:
 				METHOD(RequestMethod::GET);
 				URL("https://api.twitter.com/1.1/followers/ids.json");
 				
-				PARAMETER_UINT64(IdsParameter, user_id);
-				PARAMETER_STRING(IdsParameter, screen_name);
-				PARAMETER_UINT64(IdsParameter, cursor);
-				PARAMETER_BOOL(IdsParameter, stringify_ids);
-				PARAMETER_UINT64(IdsParameter, count);
+				PARAMETER_UINT64(IdsParameters, user_id);
+				PARAMETER_STRING(IdsParameters, screen_name);
+				PARAMETER_UINT64(IdsParameters, cursor);
+				PARAMETER_BOOL(IdsParameters, stringify_ids);
+				PARAMETER_UINT64(IdsParameters, count);
 			};
 			
-			class ListParameter : public ITwitterParameters {
+			class ListParameters : public ITwitterParameters {
+			public:
 				METHOD(RequestMethod::GET);
 				URL("https://api.twitter.com/1.1/followers/list.json");
 				
-				PARAMETER_UINT64(ListParameter, user_id);
-				PARAMETER_STRING(ListParameter, screen_name);
-				PARAMETER_UINT64(ListParameter, cursor);
-				PARAMETER_UINT64(ListParameter, count);
-				PARAMETER_BOOL(ListParameter, skip_status);
-				PARAMETER_BOOL(ListParameter, include_user_entities);
+				PARAMETER_UINT64(ListParameters, user_id);
+				PARAMETER_STRING(ListParameters, screen_name);
+				PARAMETER_UINT64(ListParameters, cursor);
+				PARAMETER_UINT64(ListParameters, count);
+				PARAMETER_BOOL(ListParameters, skip_status);
+				PARAMETER_BOOL(ListParameters, include_user_entities);
 			};
 		}
 	}

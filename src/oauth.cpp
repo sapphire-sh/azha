@@ -102,8 +102,8 @@ namespace azha {
 		std::map<std::string, std::string> p;
 		
 		for(auto&& iter : this->parameters) {
-			auto f = iter.first.find_last_of("_");
-			std::string k = iter.first.substr(f + 1);
+			auto found = iter.first.find_last_of("_");
+			std::string k = iter.first.substr(found + 1);
 			if(k != "signature" && k != "secret") {
 				p[iter.first] = iter.second;
 			}

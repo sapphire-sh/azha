@@ -6,47 +6,52 @@
 namespace azha {
 	namespace parameters {
 		namespace Friendships {
-			class IncomingParameter : public ITwitterParameters {
+			class IncomingParameters : public ITwitterParameters {
+			public:
 				METHOD(RequestMethod::GET);
 				URL("https://api.twitter.com/1.1/friendships/incoming.json");
 				
-				PARAMETER_UINT64(IncomingParameter, cursor);
-				PARAMETER_BOOL(IncomingParameter, stringify_ids);
+				PARAMETER_UINT64(IncomingParameters, cursor);
+				PARAMETER_BOOL(IncomingParameters, stringify_ids);
 			};
 			
-			class LookupParameter : public ITwitterParameters {
+			class LookupParameters : public ITwitterParameters {
+			public:
 				METHOD(RequestMethod::GET);
 				URL("https://api.twitter.com/1.1/friendships/lookup.json");
 				
-				PARAMETER_STRING(LookupParameter, screen_name);
-				PARAMETER_STRING(LookupParameter, user_id);
+				PARAMETER_STRING(LookupParameters, screen_name);
+				PARAMETER_STRING(LookupParameters, user_id);
 			};
 			
 			namespace NoRetweets {
-				class IdsParameter : public ITwitterParameters {
+				class IdsParameters : public ITwitterParameters {
+				public:
 					METHOD(RequestMethod::GET);
 					URL("https://api.twitter.com/1.1/friendships/lookup.json");
 					
-					PARAMETER_BOOL(IdsParameter, stringify_ids);
+					PARAMETER_BOOL(IdsParameters, stringify_ids);
 				};
 			}
 			
-			class OutgoingParameter : public ITwitterParameters {
+			class OutgoingParameters : public ITwitterParameters {
+			public:
 				METHOD(RequestMethod::GET);
 				URL("https://api.twitter.com/1.1/friendships/outgoing.json");
 				
-				PARAMETER_UINT64(OutgoingParameter, cursor);
-				PARAMETER_BOOL(OutgoingParameter, stringify_ids);
+				PARAMETER_UINT64(OutgoingParameters, cursor);
+				PARAMETER_BOOL(OutgoingParameters, stringify_ids);
 			};
 			
-			class ShowParameter : public ITwitterParameters {
+			class ShowParameters : public ITwitterParameters {
+			public:
 				METHOD(RequestMethod::GET);
 				URL("https://api.twitter.com/1.1/friendships/show.json");
 				
-				PARAMETER_UINT64(ShowParameter, source_id);
-				PARAMETER_STRING(ShowParameter, source_screen_name);
-				PARAMETER_UINT64(ShowParameter, target_id);
-				PARAMETER_STRING(ShowParameter, target_screen_name);
+				PARAMETER_UINT64(ShowParameters, source_id);
+				PARAMETER_STRING(ShowParameters, source_screen_name);
+				PARAMETER_UINT64(ShowParameters, target_id);
+				PARAMETER_STRING(ShowParameters, target_screen_name);
 			};
 		}
 	}

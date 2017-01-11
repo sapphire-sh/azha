@@ -7,6 +7,7 @@ namespace azha {
 	namespace parameters {
 		namespace DirectMessages {
 			class ReceivedParameters : public ITwitterParameters {
+			public:
 				METHOD(RequestMethod::GET);
 				URL("https://api.twitter.com/1.1/direct_messages.json");
 				
@@ -18,6 +19,7 @@ namespace azha {
 			};
 			
 			class SentParameters : public ITwitterParameters {
+			public:
 				METHOD(RequestMethod::GET);
 				URL("https://api.twitter.com/1.1/direct_messages/sent.json");
 				
@@ -29,6 +31,7 @@ namespace azha {
 			};
 			
 			class ShowParameters : public ITwitterParameters {
+			public:
 				METHOD(RequestMethod::GET);
 				URL("https://api.twitter.com/1.1/direct_messages/show.json");
 				

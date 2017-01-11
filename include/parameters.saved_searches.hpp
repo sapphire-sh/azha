@@ -6,12 +6,14 @@
 namespace azha {
 	namespace parameters {
 		namespace SavedSearches {
-			class ListParameter : public ITwitterParameters {
+			class ListParameters : public ITwitterParameters {
+			public:
 				METHOD(RequestMethod::GET);
 				URL("https://api.twitter.com/1.1/saved_searches/list.json");
 			};
 			
-			class ShowParameter : public ITwitterParameters {
+			class ShowParameters : public ITwitterParameters {
+			public:
 				METHOD(RequestMethod::GET);
 				const std::string &url() const {
 					std::stringstream ss;
@@ -22,7 +24,7 @@ namespace azha {
 					return _url;
 				}
 				
-				PARAMETER_UINT64(ShowParameter, id);
+				PARAMETER_UINT64(ShowParameters, id);
 			};
 		}
 	}

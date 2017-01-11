@@ -6,22 +6,26 @@
 namespace azha {
 	namespace parameters {
 		namespace Help {
-			class ConfigurationParameter : public ITwitterParameters {
+			class ConfigurationParameters : public ITwitterParameters {
+			public:
 				METHOD(RequestMethod::GET);
 				URL("https://api.twitter.com/1.1/help/configuration.json");
 			};
 			
-			class LanguagesParameter : public ITwitterParameters {
+			class LanguagesParameters : public ITwitterParameters {
+			public:
 				METHOD(RequestMethod::GET);
 				URL("https://api.twitter.com/1.1/help/languages.json");
 			};
 			
-			class PrivacyParameter : public ITwitterParameters {
+			class PrivacyParameters : public ITwitterParameters {
+			public:
 				METHOD(RequestMethod::GET);
 				URL("https://api.twitter.com/1.1/help/privacy.json");
 			};
 			
-			class TosParameter : public ITwitterParameters {
+			class TosParameters : public ITwitterParameters {
+			public:
 				METHOD(RequestMethod::GET);
 				URL("https://api.twitter.com/1.1/help/tos.json");
 			};

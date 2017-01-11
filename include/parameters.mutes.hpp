@@ -7,20 +7,22 @@ namespace azha {
 	namespace parameters {
 		namespace Mutes {
 			namespace Users {
-				class IdsParameter : public ITwitterParameters {
+				class IdsParameters : public ITwitterParameters {
+				public:
 					METHOD(RequestMethod::GET);
 					URL("https://api.twitter.com/1.1/mutes/users/ids.json");
 					
-					PARAMETER_UINT64(IdsParameter, cursor);
+					PARAMETER_UINT64(IdsParameters, cursor);
 				};
 				
-				class ListParameter : public ITwitterParameters {
+				class ListParameters : public ITwitterParameters {
+				public:
 					METHOD(RequestMethod::GET);
 					URL("https://api.twitter.com/1.1/mutes/users/list.json");
 					
-					PARAMETER_UINT64(ListParameter, cursor);
-					PARAMETER_BOOL(ListParameter, include_entities);
-					PARAMETER_BOOL(ListParameter, skip_status);
+					PARAMETER_UINT64(ListParameters, cursor);
+					PARAMETER_BOOL(ListParameters, include_entities);
+					PARAMETER_BOOL(ListParameters, skip_status);
 				};
 			}
 		}

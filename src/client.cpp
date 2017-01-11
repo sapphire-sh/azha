@@ -64,6 +64,7 @@ namespace azha {
 			std::string parameter_string;
 			if(method == parameters::RequestMethod::POST) {
 				parameter_string = Client::parameter_string(parameters);
+				std::cout << parameter_string << "\n";
 				curl_easy_setopt(curl, CURLOPT_POSTFIELDS, parameter_string.c_str());
 			}
 			

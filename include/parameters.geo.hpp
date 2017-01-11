@@ -6,7 +6,8 @@
 namespace azha {
 	namespace parameters {
 		namespace Geo {
-			class IdParameter : public ITwitterParameters {
+			class IdParameters : public ITwitterParameters {
+			public:
 				METHOD(RequestMethod::GET);
 				const std::string &url() const {
 					std::stringstream ss;
@@ -17,35 +18,37 @@ namespace azha {
 					return _url;
 				}
 				
-				PARAMETER_STRING(IdParameter, place_id);
+				PARAMETER_STRING(IdParameters, place_id);
 			};
 			
-			class ReverseGeocodeParameter : public ITwitterParameters {
+			class ReverseGeocodeParameters : public ITwitterParameters {
+			public:
 				METHOD(RequestMethod::GET);
 				URL("https://api.twitter.com/1.1/geo/reverse_geocode.json");
 				
-				PARAMETER_DOUBLE(ReverseGeocodeParameter, lat);
-				PARAMETER_DOUBLE(ReverseGeocodeParameter, lng);
-				PARAMETER_STRING(ReverseGeocodeParameter, accuracy);
-				PARAMETER_STRING(ReverseGeocodeParameter, granularity);
-				PARAMETER_UINT64(ReverseGeocodeParameter, max_results);
+				PARAMETER_DOUBLE(ReverseGeocodeParameters, lat);
+				PARAMETER_DOUBLE(ReverseGeocodeParameters, lng);
+				PARAMETER_STRING(ReverseGeocodeParameters, accuracy);
+				PARAMETER_STRING(ReverseGeocodeParameters, granularity);
+				PARAMETER_UINT64(ReverseGeocodeParameters, max_results);
 				// not sure
-				PARAMETER_STRING(ReverseGeocodeParameter, callback);
+				PARAMETER_STRING(ReverseGeocodeParameters, callback);
 			};
 			
-			class SearchParameter : public ITwitterParameters {
+			class SearchParameters : public ITwitterParameters {
+			public:
 				METHOD(RequestMethod::GET);
 				URL("https://api.twitter.com/1.1/geo/search.json");
 				
-				PARAMETER_DOUBLE(SearchParameter, lat);
-				PARAMETER_DOUBLE(SearchParameter, lng);
-				PARAMETER_STRING(SearchParameter, query);
-				PARAMETER_STRING(SearchParameter, ip);
-				PARAMETER_STRING(SearchParameter, accuracy);
-				PARAMETER_STRING(SearchParameter, granularity);
-				PARAMETER_UINT64(SearchParameter, max_results);
-				PARAMETER_STRING(SearchParameter, contained_within);
-				SearchParameter& attribute_street_address(const std::string &_attribute_street_address) {
+				PARAMETER_DOUBLE(SearchParameters, lat);
+				PARAMETER_DOUBLE(SearchParameters, lng);
+				PARAMETER_STRING(SearchParameters, query);
+				PARAMETER_STRING(SearchParameters, ip);
+				PARAMETER_STRING(SearchParameters, accuracy);
+				PARAMETER_STRING(SearchParameters, granularity);
+				PARAMETER_UINT64(SearchParameters, max_results);
+				PARAMETER_STRING(SearchParameters, contained_within);
+				SearchParameters& attribute_street_address(const std::string &_attribute_street_address) {
 					parameters["attribute:street_address"] = _attribute_street_address;
 					return *this;
 				}
@@ -53,7 +56,7 @@ namespace azha {
 					return parameters["attribute:street_address"];
 				}
 				// not sure
-				PARAMETER_STRING(SearchParameter, callback);
+				PARAMETER_STRING(SearchParameters, callback);
 			};
 		}
 	}

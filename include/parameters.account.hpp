@@ -7,17 +7,19 @@ namespace azha {
 	namespace parameters {
 		namespace Account {
 			class SettingsParameters : public ITwitterParameters {
+			public:
 				METHOD(RequestMethod::GET);
 				URL("https://api.twitter.com/1.1/account/settings.json");
 			};
 			
-			class VerifyCredentialsParameter : public ITwitterParameters {
+			class VerifyCredentialsParameters : public ITwitterParameters {
+			public:
 				METHOD(RequestMethod::GET);
 				URL("https://api.twitter.com/1.1/account/verify_credentials.json");
 				
-				PARAMETER_BOOL(VerifyCredentialsParameter, include_entities);
-				PARAMETER_BOOL(VerifyCredentialsParameter, skip_status);
-				PARAMETER_BOOL(VerifyCredentialsParameter, include_email);
+				PARAMETER_BOOL(VerifyCredentialsParameters, include_entities);
+				PARAMETER_BOOL(VerifyCredentialsParameters, skip_status);
+				PARAMETER_BOOL(VerifyCredentialsParameters, include_email);
 			};
 		}
 	}

@@ -6,32 +6,35 @@
 namespace azha {
 	namespace parameters {
 		namespace Collections {
-			class EntriesParameter : public ITwitterParameters {
+			class EntriesParameters : public ITwitterParameters {
+			public:
 				METHOD(RequestMethod::GET);
 				URL("https://api.twitter.com/1.1/collections/entries.json");
 				
-				PARAMETER_STRING(EntriesParameter, id);
-				PARAMETER_UINT64(EntriesParameter, count);
-				PARAMETER_UINT64(EntriesParameter, max_position);
-				PARAMETER_UINT64(EntriesParameter, min_position);
+				PARAMETER_STRING(EntriesParameters, id);
+				PARAMETER_UINT64(EntriesParameters, count);
+				PARAMETER_UINT64(EntriesParameters, max_position);
+				PARAMETER_UINT64(EntriesParameters, min_position);
 			};
 			
-			class ListParameter : public ITwitterParameters {
+			class ListParameters : public ITwitterParameters {
+			public:
 				METHOD(RequestMethod::GET);
 				URL("https://api.twitter.com/1.1/collections/list.json");
 				
-				PARAMETER_UINT64(ListParameter, user_id);
-				PARAMETER_STRING(ListParameter, screen_name);
-				PARAMETER_UINT64(ListParameter, tweet_id);
-				PARAMETER_UINT64(ListParameter, count);
-				PARAMETER_STRING(ListParameter, cursor);
+				PARAMETER_UINT64(ListParameters, user_id);
+				PARAMETER_STRING(ListParameters, screen_name);
+				PARAMETER_UINT64(ListParameters, tweet_id);
+				PARAMETER_UINT64(ListParameters, count);
+				PARAMETER_STRING(ListParameters, cursor);
 			};
 			
-			class ShowParameter : public ITwitterParameters {
+			class ShowParameters : public ITwitterParameters {
+			public:
 				METHOD(RequestMethod::GET);
 				URL("https://api.twitter.com/1.1/collections/show.json");
 				
-				PARAMETER_STRING(ShowParameter, id);
+				PARAMETER_STRING(ShowParameters, id);
 			};
 		}
 	}
