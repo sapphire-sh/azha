@@ -5,13 +5,18 @@
 
 namespace azha {
 	namespace parameters {
-		namespace Application {
-			class RateLimitStatusParameter : public ITwitterParameters {
-				METHOD(RequestMethod::GET);
-				URL("https://api.twitter.com/1.1/application/rate_limit_status.json");
-
-				PARAMETER_STRING(RateLimitStatusParameter, resources);
-			};
+		namespace POST {
+			namespace Media {
+				class UploadParameters : public ITwitterParameters {
+				public:
+					METHOD(RequestMethod::POST);
+					URL("https://upload.twitter.com/1.1/media/upload.json");
+					
+					PARAMETER_STRING(UploadParameters, media);
+					PARAMETER_STRING(UploadParameters, media_data);
+					PARAMETER_STRING(UploadParameters, additional_owners);
+				};
+			}
 		}
 	}
 }

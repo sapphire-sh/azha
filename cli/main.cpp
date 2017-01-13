@@ -31,9 +31,8 @@ int main() {
 	
 	azha::Client::instance().access_token("529303031-ze9rALRIGgbxhyM8gwB9plIuhlqehosuXDmMlXNZ", "vz6fXJDTNpLw5rfS1fhndkc8KSXLoxJBtdt06BA3HqOMH");
 
-	azha::parameters::Statuses::UpdateParameters update_param;
-//	update_param.status("");
-	update_param.media_ids("819237098087583744");
+	azha::parameters::POST::Statuses::UpdateParameters update_param;
+	update_param.status("");
 	const auto &status_response = azha::Client::instance().request(update_param).get();
 
 	std::cout << "ended" << std::endl;

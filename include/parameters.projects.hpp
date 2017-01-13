@@ -5,16 +5,18 @@
 
 namespace azha {
 	namespace parameters {
-		namespace Projects {
-			class ListParameters : public ITwitterParameters {
-			public:
-				METHOD(RequestMethod::GET);
-				URL("https://curator.twitter.com/broadcast/1/projects");
-				
-				PARAMETER_UINT64(ListParameters, limit);
-				PARAMETER_STRING(ListParameters, format);
-				PARAMETER_STRING(ListParameters, auth);
-			};
+		namespace GET {
+			namespace Projects {
+				class ListParameters : public ITwitterParameters {
+				public:
+					METHOD(RequestMethod::GET);
+					URL("https://curator.twitter.com/broadcast/1/projects");
+					
+					PARAMETER_UINT64(ListParameters, limit);
+					PARAMETER_STRING(ListParameters, format);
+					PARAMETER_STRING(ListParameters, auth);
+				};
+			}
 		}
 	}
 }

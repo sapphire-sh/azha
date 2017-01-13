@@ -5,25 +5,51 @@
 
 namespace azha {
 	namespace parameters {
-		namespace Mutes {
-			namespace Users {
-				class IdsParameters : public ITwitterParameters {
-				public:
-					METHOD(RequestMethod::GET);
-					URL("https://api.twitter.com/1.1/mutes/users/ids.json");
+		namespace GET {
+			namespace Mutes {
+				namespace Users {
+					class IdsParameters : public ITwitterParameters {
+					public:
+						METHOD(RequestMethod::GET);
+						URL("https://api.twitter.com/1.1/mutes/users/ids.json");
+						
+						PARAMETER_UINT64(IdsParameters, cursor);
+					};
 					
-					PARAMETER_UINT64(IdsParameters, cursor);
-				};
-				
-				class ListParameters : public ITwitterParameters {
-				public:
-					METHOD(RequestMethod::GET);
-					URL("https://api.twitter.com/1.1/mutes/users/list.json");
+					class ListParameters : public ITwitterParameters {
+					public:
+						METHOD(RequestMethod::GET);
+						URL("https://api.twitter.com/1.1/mutes/users/list.json");
+						
+						PARAMETER_UINT64(ListParameters, cursor);
+						PARAMETER_BOOL(ListParameters, include_entities);
+						PARAMETER_BOOL(ListParameters, skip_status);
+					};
+				}
+			}
+		}
+		
+		namespace POST {
+			namespace Mutes {
+				namespace Users {
+					class CreateParameters : public ITwitterParameters {
+					public:
+						METHOD(RequestMethod::POST);
+						URL("https://api.twitter.com/1.1/mutes/users/create.json");
+						
+						PARAMETER_STRING(CreateParameters, screen_name);
+						PARAMETER_UINT64(CreateParameters, user_id);
+					};
 					
-					PARAMETER_UINT64(ListParameters, cursor);
-					PARAMETER_BOOL(ListParameters, include_entities);
-					PARAMETER_BOOL(ListParameters, skip_status);
-				};
+					class DestroyParameters : public ITwitterParameters {
+					public:
+						METHOD(RequestMethod::POST);
+						URL("https://api.twitter.com/1.1/mutes/users/destroy.json");
+						
+						PARAMETER_STRING(DestroyParameters, screen_name);
+						PARAMETER_UINT64(DestroyParameters, user_id);
+					};
+				}
 			}
 		}
 	}
