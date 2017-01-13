@@ -3,10 +3,12 @@
 #include "azha.hpp"
 
 int main() {
+	auto client = new azha::Client();
+	
 	std::string consumer_key = "bFGL1R2mLMdlknzEZEuEKqwlk";//IQKbtAYlXLripLGPWd0HUA";
 	std::string consumer_secret = "DqpROputhQlx2wuiDbANEgB893dDxm61ZNHAyNUz9pYZkbG6kF";//GgDYlkSvaPxGxC4X8liwpUoqKwwr3lCADbz8A7ADU";
 	
-	azha::Client::instance().consumer_key(consumer_key, consumer_secret);
+	client->consumer_key(consumer_key, consumer_secret);
 	
 //	azha::parameters::OAuth::RequestTokenParameters request_token_param;
 //	request_token_param.oauth_callback("oob");
@@ -29,11 +31,11 @@ int main() {
 //
 //	azha::Client::instance().access_token(access_token_response.at("oauth_token"), access_token_response.at("oauth_token_secret"));
 	
-	azha::Client::instance().access_token("529303031-ze9rALRIGgbxhyM8gwB9plIuhlqehosuXDmMlXNZ", "vz6fXJDTNpLw5rfS1fhndkc8KSXLoxJBtdt06BA3HqOMH");
+	client->access_token("529303031-ze9rALRIGgbxhyM8gwB9plIuhlqehosuXDmMlXNZ", "vz6fXJDTNpLw5rfS1fhndkc8KSXLoxJBtdt06BA3HqOMH");
 
 	azha::parameters::POST::Statuses::UpdateParameters update_param;
 	update_param.status("");
-	const auto &status_response = azha::Client::instance().request(update_param).get();
+	const auto &status_response = client->request(update_param).get();
 
 	std::cout << "ended" << std::endl;
 

@@ -28,21 +28,15 @@ namespace azha {
 			size_t size;
 		};
 		
-		static Client& instance() {
-			static Client _instance;
-			return _instance;
-		}
+		Client();
+		~Client();
 		
 		void consumer_key(const std::string &_consumer_key, const std::string &_consumer_secret);
 		void access_token(const std::string &_access_token, const std::string &_access_token_secret);
 		
-		~Client();
-		
 		std::future<ResultType> request(const parameters::ITwitterParameters &parameters);
 		std::future<ResultType> request(const parameters::RequestMethod &method, const std::string &url, const parameters::RequestParams &parameters);
 	private:
-		Client();
-		
 		std::unique_ptr<OAuth> _oauth;
 		
 		static size_t write_callback(void *contents, size_t size, size_t nmemb, void *userp);
