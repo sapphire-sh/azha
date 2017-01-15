@@ -34,29 +34,29 @@ namespace azha {
 		oauth_nonce(generate_nonce());
 		oauth_timestamp(generate_timestamp());
 		oauth_signature(calculate_signature(method, url, parameters));
-		
-		CURL* curl = curl_easy_init();
-		
+
+		auto curl = curl_easy_init();
+
 		std::stringstream ss;
 
 		ss << "OAuth ";
 
 		for(auto&& iter : this->parameters) {
 			auto found = iter.first.find_last_of("_");
-			std::string token = iter.first.substr(found + 1);
+			auto token = iter.first.substr(found + 1);
 			if(token != "secret") {
-			ss << iter.first << "=\"" << curl_easy_escape(curl, iter.second.c_str(), iter.second.size()) << "\", ";
+				ss << iter.first << "=\"" << curl_easy_escape(curl, iter.second.c_str(), static_cast<int>(iter.second.size())) << "\", ";
 			}
 		}
 		for(auto&& iter : parameters) {
 			auto found = iter.first.find_first_of("_");
-			std::string token = iter.first.substr(0, found);
+			auto token = iter.first.substr(0, found);
 			if(token == "oauth") {
-				ss << iter.first << "=\"" << curl_easy_escape(curl, iter.second.c_str(), iter.second.size()) << "\", ";
+				ss << iter.first << "=\"" << curl_easy_escape(curl, iter.second.c_str(), static_cast<int>(iter.second.size())) << "\", ";
 			}
 		}
-		
-		std::string h_str = ss.str();
+
+		auto h_str = ss.str();
 		h_str.pop_back();
 		h_str.pop_back();
 
@@ -86,9 +86,9 @@ namespace azha {
 
 		unsigned char* result;
 		unsigned int len = 20;
-		
-		result = (unsigned char*)malloc(sizeof(char) * len);
-		
+
+		result = static_cast<unsigned char*>(malloc(sizeof(char) * len));
+
 		HMAC_CTX ctx;
 		HMAC_CTX_init(&ctx);
 
@@ -96,9 +96,8 @@ namespace azha {
 		HMAC_Update(&ctx, reinterpret_cast<const unsigned char*>(data.c_str()), static_cast<int>(data.length()));
 		HMAC_Final(&ctx, result, &len);
 		HMAC_CTX_cleanup(&ctx);
-		
-		std::string signature = base64_encode(result, len);
-		
+
+		auto signature = base64_encode(result, len);
 		free(result);
 
 		return signature;
@@ -111,7 +110,7 @@ namespace azha {
 
 		for(auto&& iter : this->parameters) {
 			auto found = iter.first.find_last_of("_");
-			std::string k = iter.first.substr(found + 1);
+			auto k = iter.first.substr(found + 1);
 			if(k != "signature" && k != "secret") {
 				p[iter.first] = iter.second;
 			}
@@ -123,10 +122,10 @@ namespace azha {
 		std::stringstream ss;
 
 		for(auto&& iter : p) {
-			ss << iter.first << "=" << curl_easy_escape(curl, iter.second.c_str(), iter.second.size()) << "&";
+			ss << iter.first << "=" << curl_easy_escape(curl, iter.second.c_str(), static_cast<int>(iter.second.size())) << "&";
 		}
-		
-		std::string parameter_string = ss.str();
+
+		auto parameter_string = ss.str();
 		parameter_string.pop_back();
 
 		return parameter_string;
@@ -138,11 +137,11 @@ namespace azha {
 		std::stringstream ss;
 
 		ss << (method == parameters::RequestMethod::POST ? "POST&" : "GET&");
-		ss << curl_easy_escape(curl, url.c_str(), url.size()) << "&";
-		
+		ss << curl_easy_escape(curl, url.c_str(), static_cast<int>(url.size())) << "&";
+
 		std::string p_str = parameter_string(parameters);
-		ss << curl_easy_escape(curl, p_str.c_str(), p_str.size());
-		
+		ss << curl_easy_escape(curl, p_str.c_str(), static_cast<int>(p_str.size()));
+
 		return ss.str();
 	}
 	
