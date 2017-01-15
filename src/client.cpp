@@ -11,7 +11,7 @@
 
 namespace azha {
 	Client::Client()
-	  : _oauth(new OAuth()) {
+		: _oauth(new OAuth()) {
 		curl_global_init(CURL_GLOBAL_ALL);
 	}
 
@@ -48,7 +48,7 @@ namespace azha {
 		data.size = 0;
 		
 		curl = curl_easy_init();
-		
+
 		if (curl == nullptr) {
 			throw RequestFailedException("curl init failed");
 		}
@@ -134,7 +134,7 @@ namespace azha {
 
 		return parameter_string;
 	}
-	
+
 	size_t Client::write_callback(void *contents, size_t size, size_t nmemb, void *userp) {
 		auto realsize = size * nmemb;
 		auto mem = static_cast<struct MemoryStruct *>(userp);
