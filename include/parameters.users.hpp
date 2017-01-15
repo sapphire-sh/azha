@@ -8,76 +8,90 @@ namespace azha {
 		namespace GET {
 			namespace Users {
 				class LookupParameters : public ITwitterParameters {
-					METHOD(RequestMethod::GET);
-					URL("https://api.twitter.com/1.1/users/lookup.json");
+				public:
+					INIT(LookupParameters)
+					METHOD(RequestMethod::GET)
+					URL("https://api.twitter.com/1.1/users/lookup.json")
 
-					PARAMETER_STRING(LookupParameters, screen_name);
-					PARAMETER_UINT64(LookupParameters, user_id);
-					PARAMETER_BOOL(LookupParameters, include_entities);
+					PARAMETER(std::string, screen_name)
+					PARAMETER(uint64_t, user_id)
+					PARAMETER(bool, include_entities)
 				};
 				
 				class ProfileBannerParameters : public ITwitterParameters {
-					METHOD(RequestMethod::GET);
-					URL("https://api.twitter.com/1.1/users/profile_banner.json");
-					
-					PARAMETER_STRING(ProfileBannerParameters, screen_name);
-					PARAMETER_UINT64(ProfileBannerParameters, user_id);
+				public:
+					INIT(ProfileBannerParameters)
+					METHOD(RequestMethod::GET)
+					URL("https://api.twitter.com/1.1/users/profile_banner.json")
+
+					PARAMETER(std::string, screen_name)
+					PARAMETER(uint64_t, user_id)
 				};
 				
 				class SearchParameters : public ITwitterParameters {
-					METHOD(RequestMethod::GET);
-					URL("https://api.twitter.com/1.1/users/search.json");
-					
-					PARAMETER_STRING(SearchParameters, q);
-					PARAMETER_UINT64(SearchParameters, page);
-					PARAMETER_UINT64(SearchParameters, count);
-					PARAMETER_BOOL(SearchParameters, include_entities);
+				public:
+					INIT(SearchParameters)
+					METHOD(RequestMethod::GET)
+					URL("https://api.twitter.com/1.1/users/search.json")
+
+					PARAMETER(std::string, q)
+					PARAMETER(uint64_t, page)
+					PARAMETER(uint64_t, count)
+					PARAMETER(bool, include_entities)
 				};
 				
 				class ShowParameters : public ITwitterParameters {
-					METHOD(RequestMethod::GET);
-					URL("https://api.twitter.com/1.1/users/show.json");
-					
-					PARAMETER_UINT64(ShowParameters, user_id);
-					PARAMETER_STRING(ShowParameters, screen_name);
-					PARAMETER_BOOL(ShowParameters, include_entities);
+					INIT(ShowParameters)
+					METHOD(RequestMethod::GET)
+					URL("https://api.twitter.com/1.1/users/show.json")
+
+					PARAMETER(uint64_t, user_id)
+					PARAMETER(std::string, screen_name)
+					PARAMETER(bool, include_entities)
 				};
 				
 				class SuggestionsParameters : public ITwitterParameters {
-					METHOD(RequestMethod::GET);
-					URL("https://api.twitter.com/1.1/users/suggestions.json");
-					
-					PARAMETER_STRING(SuggestionsParameters, lang);
+					INIT(SuggestionsParameters)
+					METHOD(RequestMethod::GET)
+					URL("https://api.twitter.com/1.1/users/suggestions.json")
+
+					PARAMETER(std::string, lang)
 				};
 				
 				namespace Suggestions {
 					class ListParameters : public ITwitterParameters {
-						METHOD(RequestMethod::GET);
-						const std::string &url() const {
+					public:
+						INIT(ListParameters)
+						METHOD(RequestMethod::GET)
+						const std::string &request_url() const override
+						{
 							std::stringstream ss;
 							ss << "https://api.twitter.com/1.1/users/suggestions/";
 							ss << parameters.at("slug");
 							ss << ".json";
-							static const std::string _url = ss.str();
+							const auto _url = ss.str();
 							return _url;
 						}
-						
-						PARAMETER_STRING(ListParameters, slug);
-						PARAMETER_STRING(ListParameters, lang);
+
+						PARAMETER(std::string, slug)
+						PARAMETER(std::string, lang)
 					};
 					
 					class MembersParameters : public ITwitterParameters {
-						METHOD(RequestMethod::GET);
-						const std::string &url() const {
+					public:
+						INIT(MembersParameters)
+						METHOD(RequestMethod::GET)
+						const std::string &request_url() const override
+						{
 							std::stringstream ss;
 							ss << "https://api.twitter.com/1.1/users/suggestions/";
 							ss << parameters.at("slug");
 							ss << "/members.json";
-							static const std::string _url = ss.str();
+							const auto _url = ss.str();
 							return _url;
 						}
-						
-						PARAMETER_STRING(MembersParameters, slug);
+
+						PARAMETER(std::string, slug)
 					};
 				}
 			}
@@ -86,11 +100,12 @@ namespace azha {
 		namespace POST {
 			namespace Users {
 				class ReportSpamParameters : public ITwitterParameters {
-					METHOD(RequestMethod::POST);
-					URL("https://api.twitter.com/1.1/users/report_spam.json");
-					
-					PARAMETER_STRING(ReportSpamParameters, screen_name);
-					PARAMETER_UINT64(ReportSpamParameters, user_id);
+					INIT(ReportSpamParameters)
+					METHOD(RequestMethod::POST)
+					URL("https://api.twitter.com/1.1/users/report_spam.json")
+
+					PARAMETER(std::string, screen_name)
+					PARAMETER(uint64_t, user_id)
 				};
 			}
 		}

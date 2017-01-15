@@ -9,19 +9,20 @@ namespace azha {
 			namespace Search {
 				class TweetsParameters : public ITwitterParameters {
 				public:
-					METHOD(RequestMethod::GET);
-					URL("https://api.twitter.com/1.1/search/tweets.json");
+					INIT(TweetsParameters)
+					METHOD(RequestMethod::GET)
+					URL("https://api.twitter.com/1.1/search/tweets.json")
 
-					PARAMETER_STRING(TweetsParameters, q);
-					PARAMETER_STRING(TweetsParameters, geocode);
-					PARAMETER_STRING(TweetsParameters, lang);
-					PARAMETER_STRING(TweetsParameters, locale);
-					PARAMETER_STRING(TweetsParameters, result_type);
-					PARAMETER_UINT64(TweetsParameters, count);
-					PARAMETER_STRING(TweetsParameters, until);
-					PARAMETER_UINT64(TweetsParameters, since_id);
-					PARAMETER_UINT64(TweetsParameters, max_id);
-					PARAMETER_BOOL(TweetsParameters, include_entities);
+					PARAMETER(std::string, q)
+					PARAMETER(std::string, geocode)
+					PARAMETER(std::string, lang)
+					PARAMETER(std::string, locale)
+					PARAMETER(std::string, result_type)
+					PARAMETER(uint64_t, count)
+					PARAMETER(std::string, until)
+					PARAMETER(uint64_t, since_id)
+					PARAMETER(uint64_t, max_id)
+					PARAMETER(bool, include_entities)
 				};
 			}
 		}

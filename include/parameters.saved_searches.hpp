@@ -9,23 +9,25 @@ namespace azha {
 			namespace SavedSearches {
 				class ListParameters : public ITwitterParameters {
 				public:
-					METHOD(RequestMethod::GET);
-					URL("https://api.twitter.com/1.1/saved_searches/list.json");
+					INIT(ListParameters)
+					METHOD(RequestMethod::GET)
+					URL("https://api.twitter.com/1.1/saved_searches/list.json")
 				};
 				
 				class ShowParameters : public ITwitterParameters {
 				public:
-					METHOD(RequestMethod::GET);
-					const std::string &url() const {
+					INIT(ShowParameters)
+					METHOD(RequestMethod::GET)
+					const std::string &request_url() const override {
 						std::stringstream ss;
 						ss << "https://api.twitter.com/1.1/saved_searches/show/";
 						ss << parameters.at("id");
 						ss << ".json";
-						static const std::string _url = ss.str();
+						const std::string _url = ss.str();
 						return _url;
 					}
-					
-					PARAMETER_UINT64(ShowParameters, id);
+
+					PARAMETER(uint64_t, id)
 				};
 			}
 		}
@@ -34,25 +36,27 @@ namespace azha {
 			namespace SavedSearches {
 				class CreateParameters : public ITwitterParameters {
 				public:
-					METHOD(RequestMethod::POST);
-					URL("https://api.twitter.com/1.1/saved_searches/create.json");
-					
-					PARAMETER_STRING(CreateParameters, query);
+					INIT(CreateParameters)
+					METHOD(RequestMethod::POST)
+					URL("https://api.twitter.com/1.1/saved_searches/create.json")
+
+					PARAMETER(std::string, query)
 				};
 				
 				class DestroyParameters : public ITwitterParameters {
 				public:
-					METHOD(RequestMethod::POST);
-					const std::string &url() const {
+					INIT(DestroyParameters)
+					METHOD(RequestMethod::POST)
+					const std::string &request_url() const override {
 						std::stringstream ss;
 						ss << "https://api.twitter.com/1.1/saved_searches/destroy/";
 						ss << parameters.at("id");
 						ss << ".json";
-						static const std::string _url = ss.str();
+						const std::string _url = ss.str();
 						return _url;
 					}
-					
-					PARAMETER_UINT64(DestroyParameters, id);
+				  
+				  PARAMETER(uint64_t, id)
 				};
 			}
 		}

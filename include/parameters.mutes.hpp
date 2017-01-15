@@ -9,21 +9,19 @@ namespace azha {
 			namespace Mutes {
 				namespace Users {
 					class IdsParameters : public ITwitterParameters {
-					public:
-						METHOD(RequestMethod::GET);
-						URL("https://api.twitter.com/1.1/mutes/users/ids.json");
-						
-						PARAMETER_UINT64(IdsParameters, cursor);
+					INIT(IdsParameters)
+						METHOD(RequestMethod::GET)
+					URL("https://api.twitter.com/1.1/mutes/users/ids.json")
+					PARAMETER(uint64_t, cursor)
 					};
 					
 					class ListParameters : public ITwitterParameters {
-					public:
-						METHOD(RequestMethod::GET);
-						URL("https://api.twitter.com/1.1/mutes/users/list.json");
-						
-						PARAMETER_UINT64(ListParameters, cursor);
-						PARAMETER_BOOL(ListParameters, include_entities);
-						PARAMETER_BOOL(ListParameters, skip_status);
+					INIT(ListParameters)
+						METHOD(RequestMethod::GET)
+					URL("https://api.twitter.com/1.1/mutes/users/list.json")
+					PARAMETER(uint64_t, cursor)
+					PARAMETER(bool, include_entities)
+					PARAMETER(bool, skip_status)
 					};
 				}
 			}
@@ -33,21 +31,19 @@ namespace azha {
 			namespace Mutes {
 				namespace Users {
 					class CreateParameters : public ITwitterParameters {
-					public:
-						METHOD(RequestMethod::POST);
-						URL("https://api.twitter.com/1.1/mutes/users/create.json");
-						
-						PARAMETER_STRING(CreateParameters, screen_name);
-						PARAMETER_UINT64(CreateParameters, user_id);
+					INIT(CreateParameters)
+						METHOD(RequestMethod::POST)
+					URL("https://api.twitter.com/1.1/mutes/users/create.json")
+					PARAMETER(std::string, screen_name)
+					PARAMETER(uint64_t, user_id)
 					};
 					
 					class DestroyParameters : public ITwitterParameters {
-					public:
-						METHOD(RequestMethod::POST);
-						URL("https://api.twitter.com/1.1/mutes/users/destroy.json");
-						
-						PARAMETER_STRING(DestroyParameters, screen_name);
-						PARAMETER_UINT64(DestroyParameters, user_id);
+					INIT(DestroyParameters)
+						METHOD(RequestMethod::POST)
+					URL("https://api.twitter.com/1.1/mutes/users/destroy.json")
+					PARAMETER(std::string, screen_name)
+					PARAMETER(uint64_t, user_id)
 					};
 				}
 			}

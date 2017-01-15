@@ -8,35 +8,32 @@ namespace azha {
 		namespace GET {
 			namespace DirectMessages {
 				class ReceivedParameters : public ITwitterParameters {
-				public:
-					METHOD(RequestMethod::GET);
-					URL("https://api.twitter.com/1.1/direct_messages.json");
-					
-					PARAMETER_UINT64(ReceivedParameters, since_id);
-					PARAMETER_UINT64(ReceivedParameters, max_id);
-					PARAMETER_UINT64(ReceivedParameters, count);
-					PARAMETER_BOOL(ReceivedParameters, include_entities);
-					PARAMETER_BOOL(ReceivedParameters, skip_status);
+					INIT(ReceivedParameters)
+					METHOD(RequestMethod::GET)
+					URL("https://api.twitter.com/1.1/direct_messages.json")
+					PARAMETER(uint64_t, since_id)
+					PARAMETER(uint64_t, max_id)
+					PARAMETER(uint64_t, count)
+					PARAMETER(bool, include_entities)
+					PARAMETER(bool, skip_status)
 				};
 				
 				class SentParameters : public ITwitterParameters {
-				public:
-					METHOD(RequestMethod::GET);
-					URL("https://api.twitter.com/1.1/direct_messages/sent.json");
-					
-					PARAMETER_UINT64(SentParameters, since_id);
-					PARAMETER_UINT64(SentParameters, max_id);
-					PARAMETER_UINT64(SentParameters, count);
-					PARAMETER_UINT64(SentParameters, page);
-					PARAMETER_BOOL(SentParameters, include_entities);
+					INIT(SentParameters)
+					METHOD(RequestMethod::GET)
+					URL("https://api.twitter.com/1.1/direct_messages/sent.json")
+					PARAMETER(uint64_t, since_id)
+					PARAMETER(uint64_t, max_id)
+					PARAMETER(uint64_t, count)
+					PARAMETER(uint64_t, page)
+					PARAMETER(bool, include_entities)
 				};
 				
 				class ShowParameters : public ITwitterParameters {
-				public:
-					METHOD(RequestMethod::GET);
-					URL("https://api.twitter.com/1.1/direct_messages/show.json");
-					
-					PARAMETER_UINT64(ShowParameters, id);
+					INIT(ShowParameters)
+					METHOD(RequestMethod::GET)
+					URL("https://api.twitter.com/1.1/direct_messages/show.json")
+					PARAMETER(uint64_t, id)
 				};
 			}
 		}
@@ -44,22 +41,20 @@ namespace azha {
 		namespace POST {
 			namespace DirectMessages {
 				class DestroyParameters : public ITwitterParameters {
-				public:
-					METHOD(RequestMethod::POST);
-					URL("https://api.twitter.com/1.1/direct_messages/destroy.json");
-					
-					PARAMETER_UINT64(DestroyParameters, id);
-					PARAMETER_BOOL(DestroyParameters, include_entities);
+					INIT(DestroyParameters)
+					METHOD(RequestMethod::POST)
+					URL("https://api.twitter.com/1.1/direct_messages/destroy.json")
+					PARAMETER(uint64_t, id)
+					PARAMETER(bool, include_entities)
 				};
 				
 				class NewParameters : public ITwitterParameters {
-				public:
-					METHOD(RequestMethod::POST);
-					URL("https://api.twitter.com/1.1/direct_messages/new.json");
-					
-					PARAMETER_UINT64(NewParameters, user_id);
-					PARAMETER_STRING(NewParameters, screen_name);
-					PARAMETER_STRING(NewParameters, text);
+					INIT(NewParameters)
+					METHOD(RequestMethod::POST)
+					URL("https://api.twitter.com/1.1/direct_messages/new.json")
+					PARAMETER(uint64_t, user_id)
+					PARAMETER(std::string, screen_name)
+					PARAMETER(std::string, text)
 				};
 			}
 		}

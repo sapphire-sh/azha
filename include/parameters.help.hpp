@@ -9,26 +9,30 @@ namespace azha {
 			namespace Help {
 				class ConfigurationParameters : public ITwitterParameters {
 				public:
-					METHOD(RequestMethod::GET);
-					URL("https://api.twitter.com/1.1/help/configuration.json");
+					INIT(ConfigurationParameters)
+					METHOD(RequestMethod::GET)
+					URL("https://api.twitter.com/1.1/help/configuration.json")
 				};
 				
 				class LanguagesParameters : public ITwitterParameters {
 				public:
-					METHOD(RequestMethod::GET);
-					URL("https://api.twitter.com/1.1/help/languages.json");
+					INIT(LanguagesParameters)
+					METHOD(RequestMethod::GET)
+					URL("https://api.twitter.com/1.1/help/languages.json")
 				};
 				
 				class PrivacyParameters : public ITwitterParameters {
 				public:
-					METHOD(RequestMethod::GET);
-					URL("https://api.twitter.com/1.1/help/privacy.json");
+					INIT(PrivacyParameters)
+					METHOD(RequestMethod::GET)
+					URL("https://api.twitter.com/1.1/help/privacy.json")
 				};
 				
 				class TosParameters : public ITwitterParameters {
 				public:
-					METHOD(RequestMethod::GET);
-					URL("https://api.twitter.com/1.1/help/tos.json");
+					INIT(TosParameters)
+					METHOD(RequestMethod::GET)
+					URL("https://api.twitter.com/1.1/help/tos.json")
 				};
 			}
 		}

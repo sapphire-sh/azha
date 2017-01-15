@@ -8,28 +8,26 @@ namespace azha {
 		namespace GET {
 			namespace Followers {
 				class IdsParameters : public ITwitterParameters {
-				public:
-					METHOD(RequestMethod::GET);
-					URL("https://api.twitter.com/1.1/followers/ids.json");
-					
-					PARAMETER_UINT64(IdsParameters, user_id);
-					PARAMETER_STRING(IdsParameters, screen_name);
-					PARAMETER_UINT64(IdsParameters, cursor);
-					PARAMETER_BOOL(IdsParameters, stringify_ids);
-					PARAMETER_UINT64(IdsParameters, count);
+					INIT(IdsParameters)
+					METHOD(RequestMethod::GET)
+					URL("https://api.twitter.com/1.1/followers/ids.json")
+					PARAMETER(uint64_t, user_id)
+					PARAMETER(std::string, screen_name)
+					PARAMETER(uint64_t, cursor)
+					PARAMETER(bool, stringify_ids)
+					PARAMETER(uint64_t, count)
 				};
 				
 				class ListParameters : public ITwitterParameters {
-				public:
-					METHOD(RequestMethod::GET);
-					URL("https://api.twitter.com/1.1/followers/list.json");
-					
-					PARAMETER_UINT64(ListParameters, user_id);
-					PARAMETER_STRING(ListParameters, screen_name);
-					PARAMETER_UINT64(ListParameters, cursor);
-					PARAMETER_UINT64(ListParameters, count);
-					PARAMETER_BOOL(ListParameters, skip_status);
-					PARAMETER_BOOL(ListParameters, include_user_entities);
+					INIT(ListParameters)
+					METHOD(RequestMethod::GET)
+					URL("https://api.twitter.com/1.1/followers/list.json")
+					PARAMETER(uint64_t, user_id)
+					PARAMETER(std::string, screen_name)
+					PARAMETER(uint64_t, cursor)
+					PARAMETER(uint64_t, count)
+					PARAMETER(bool, skip_status)
+					PARAMETER(bool, include_user_entities)
 				};
 			}
 		}
