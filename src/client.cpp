@@ -131,19 +131,19 @@ namespace azha {
 		for(const auto& iter : p) {
 			ss << iter.first << "=" << curl_easy_escape(curl, iter.second.c_str(), static_cast<int>(iter.second.size())) << "&";
 		}
-		
-		std::string parameter_string = ss.str();
+
+		auto parameter_string = ss.str();
 		parameter_string.pop_back();
 
 		return parameter_string;
 	}
 	
 	size_t Client::write_callback(void *contents, size_t size, size_t nmemb, void *userp) {
-		size_t realsize = size * nmemb;
-		struct MemoryStruct *mem = reinterpret_cast<struct MemoryStruct *>(userp);
-		
-		mem->memory = (char*)realloc(mem->memory, mem->size + realsize + 1);
-		if(mem->memory == NULL) {
+		auto realsize = size * nmemb;
+		auto mem = static_cast<struct MemoryStruct *>(userp);
+
+		mem->memory = reinterpret_cast<char *>(realloc(mem->memory, mem->size + realsize + 1));
+		if(mem->memory == nullptr) {
 			printf("not enough memory (realloc returned NULL)\n");
 			return 0;
 		}
