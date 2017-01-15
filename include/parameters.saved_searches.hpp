@@ -13,7 +13,7 @@ namespace azha {
 					METHOD(RequestMethod::GET)
 					URL("https://api.twitter.com/1.1/saved_searches/list.json")
 				};
-				
+
 				class ShowParameters : public ITwitterParameters {
 				public:
 					INIT(ShowParameters)
@@ -24,7 +24,7 @@ namespace azha {
 				};
 			}
 		}
-		
+
 		namespace POST {
 			namespace SavedSearches {
 				class CreateParameters : public ITwitterParameters {
@@ -35,7 +35,7 @@ namespace azha {
 
 					PARAMETER(std::string, query)
 				};
-				
+
 				class DestroyParameters : public ITwitterParameters {
 				public:
 					INIT(DestroyParameters)

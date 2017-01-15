@@ -17,7 +17,7 @@ namespace azha {
 
 					PARAMETER(std::string, place_id)
 				};
-				
+
 				class ReverseGeocodeParameters : public ITwitterParameters {
 				public:
 					INIT(ReverseGeocodeParameters)
@@ -31,7 +31,7 @@ namespace azha {
 					PARAMETER(uint64_t, max_results)
 					// not sure PARAMETER(std::string, callback)
 				};
-				
+
 				class SearchParameters : public ITwitterParameters {
 				public:
 					INIT(SearchParameters)
@@ -51,7 +51,7 @@ namespace azha {
 				};
 			}
 		}
-		
+
 		namespace POST {
 			namespace Geo {
 				class PlaceParameters : public ITwitterParameters {

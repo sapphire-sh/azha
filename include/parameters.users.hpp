@@ -17,7 +17,7 @@ namespace azha {
 					PARAMETER(uint64_t, user_id)
 					PARAMETER(bool, include_entities)
 				};
-				
+
 				class ProfileBannerParameters : public ITwitterParameters {
 				public:
 					INIT(ProfileBannerParameters)
@@ -27,7 +27,7 @@ namespace azha {
 					PARAMETER(std::string, screen_name)
 					PARAMETER(uint64_t, user_id)
 				};
-				
+
 				class SearchParameters : public ITwitterParameters {
 				public:
 					INIT(SearchParameters)
@@ -39,7 +39,7 @@ namespace azha {
 					PARAMETER(uint64_t, count)
 					PARAMETER(bool, include_entities)
 				};
-				
+
 				class ShowParameters : public ITwitterParameters {
 					INIT(ShowParameters)
 					METHOD(RequestMethod::GET)
@@ -49,7 +49,7 @@ namespace azha {
 					PARAMETER(std::string, screen_name)
 					PARAMETER(bool, include_entities)
 				};
-				
+
 				class SuggestionsParameters : public ITwitterParameters {
 					INIT(SuggestionsParameters)
 					METHOD(RequestMethod::GET)
@@ -57,7 +57,7 @@ namespace azha {
 
 					PARAMETER(std::string, lang)
 				};
-				
+
 				namespace Suggestions {
 					class ListParameters : public ITwitterParameters {
 					public:
@@ -68,7 +68,7 @@ namespace azha {
 						PARAMETER(std::string, slug)
 						PARAMETER(std::string, lang)
 					};
-					
+
 					class MembersParameters : public ITwitterParameters {
 					public:
 						INIT(MembersParameters)
@@ -80,7 +80,7 @@ namespace azha {
 				}
 			}
 		}
-		
+
 		namespace POST {
 			namespace Users {
 				class ReportSpamParameters : public ITwitterParameters {

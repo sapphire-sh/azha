@@ -20,7 +20,7 @@ namespace azha {
 					PARAMETER(bool, contributor_details)
 					PARAMETER(bool, include_entities)
 				};
-				
+
 				class LookupParameters : public ITwitterParameters {
 				public:
 					INIT(LookupParameters)
@@ -29,7 +29,7 @@ namespace azha {
 
 					PARAMETER(std::string, id)
 				};
-				
+
 				class MentionsTimelineParameters : public ITwitterParameters {
 				public:
 					INIT(MentionsTimelineParameters)
@@ -43,7 +43,7 @@ namespace azha {
 					PARAMETER(bool, contributor_details)
 					PARAMETER(bool, include_entities)
 				};
-				
+
 				class OembedParameters : public ITwitterParameters {
 				public:
 					INIT(OembedParameters)
@@ -62,7 +62,7 @@ namespace azha {
 					PARAMETER(std::string, link_color)
 					PARAMETER(std::string, widget_type)
 				};
-				
+
 				namespace Retweeters {
 					class IdsParameters : public ITwitterParameters {
 					public:
@@ -75,7 +75,7 @@ namespace azha {
 						PARAMETER(bool, stringify_ids)
 					};
 				}
-				
+
 				namespace Retweets {
 					class ListParameters : public ITwitterParameters {
 					public:
@@ -133,7 +133,7 @@ namespace azha {
 				};
 			}
 		}
-		
+
 		namespace POST {
 			namespace Statuses {
 				class DestroyParameters : public ITwitterParameters {
@@ -145,7 +145,7 @@ namespace azha {
 					PARAMETER(uint64_t, id)
 					PARAMETER(bool, trim_user)
 				};
-				
+
 				class RetweetParameters : public ITwitterParameters {
 				public:
 					INIT(RetweetParameters)
@@ -155,7 +155,7 @@ namespace azha {
 					PARAMETER(uint64_t, id)
 					PARAMETER(bool, trim_user)
 				};
-				
+
 				class UnretweetParameters : public ITwitterParameters {
 				public:
 					INIT(UnretweetParameters)
@@ -165,7 +165,7 @@ namespace azha {
 					PARAMETER(uint64_t, id)
 					PARAMETER(bool, trim_user)
 				};
-				
+
 				class UpdateParameters : public ITwitterParameters {
 				public:
 					INIT(UpdateParameters)
