@@ -1,10 +1,10 @@
 #ifndef __PARAMETERS_INTERFACE_H__
 #define __PARAMETERS_INTERFACE_H__
 
-#include <unordered_map>
-#include <type_traits>
-#include <string>
 #include <cstdio>
+#include <string>
+#include <type_traits>
+#include <unordered_map>
 
 #define METHOD(x)\
 	const RequestMethod &request_method() const override {\
