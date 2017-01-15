@@ -1,13 +1,26 @@
-#include <iostream>
 #include <ctime>
 #include <map>
 #include <sstream>
 
 #include <curl/curl.h>
 #include <openssl/hmac.h>
+#include <openssl/evp.h>
 
 #include "base64.hpp"
 #include "oauth.hpp"
+#include <memory>
+
+#if OPENSSL_VERSION_NUMBER < 0x10100000L
+	#define HMAC_CTX_WRAP HMAC_CTX
+	#define HMAC_CTX_WRAP_INIT(ctx) HMAC_CTX_init(&ctx);
+	#define HMAC_CTX_WRAP_PTR(ctx) &ctx
+	#define HMAC_CTX_WRAP_CLEANUP(ctx) HMAC_CTX_cleanup(&ctx)
+#else
+	#define HMAC_CTX_WRAP HMAC_CTX *
+	#define HMAC_CTX_WRAP_INIT(ctx) ctx = HMAC_CTX_new();
+	#define HMAC_CTX_WRAP_PTR(ctx) ctx
+	#define HMAC_CTX_WRAP_CLEANUP(ctx) HMAC_CTX_free(ctx)
+#endif
 
 namespace azha {
 	OAuth::OAuth() {
@@ -70,7 +83,6 @@ namespace azha {
 	std::string OAuth::calculate_signature(const parameters::RequestMethod &method, const std::string &url, const parameters::RequestParams &parameters) {
 		auto key = signing_key();
 		auto data = signature_base_string(method, url, parameters);
-
 		unsigned char* result;
 		unsigned int len = 20;
 
