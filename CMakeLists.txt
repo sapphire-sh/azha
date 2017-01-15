@@ -38,6 +38,13 @@ list(APPEND AZHA_SRCS
 	${INC_DIR}/parameters.statuses.hpp
 	${INC_DIR}/parameters.trends.hpp
 	${INC_DIR}/parameters.users.hpp
+	${INC_DIR}/response.hpp
+	${INC_DIR}/response.interface.hpp
+	${INC_DIR}/response.coordinates.hpp
+	${INC_DIR}/response.entities.hpp
+	${INC_DIR}/response.places.hpp
+	${INC_DIR}/response.tweet.hpp
+	${INC_DIR}/response.user.hpp
 	${INC_DIR}/base64.hpp
 	${SRC_DIR}/base64.cpp
 )

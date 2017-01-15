@@ -8,6 +8,7 @@
 
 #include "oauth.hpp"
 #include "parameters.hpp"
+#include "response.hpp"
 
 namespace azha {
 	class RequestFailedException : public std::exception {
