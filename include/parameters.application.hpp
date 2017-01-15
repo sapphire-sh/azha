@@ -9,10 +9,11 @@ namespace azha {
 			namespace Application {
 				class RateLimitStatusParameters : public ITwitterParameters {
 				public:
-					METHOD(RequestMethod::GET);
-					URL("https://api.twitter.com/1.1/application/rate_limit_status.json");
+					INIT(RateLimitStatusParameters)
+					METHOD(RequestMethod::GET)
+					URL("https://api.twitter.com/1.1/application/rate_limit_status.json")
 
-					PARAMETER_STRING(RateLimitStatusParameters, resources);
+					PARAMETER(std::string, resources)
 				};
 			}
 		}

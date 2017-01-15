@@ -83,19 +83,19 @@ namespace azha {
 	std::string OAuth::calculate_signature(const parameters::RequestMethod &method, const std::string &url, const parameters::RequestParams &parameters) {
 		auto key = signing_key();
 		auto data = signature_base_string(method, url, parameters);
-    
+
 		unsigned char* result;
 		unsigned int len = 20;
 
 		result = static_cast<unsigned char*>(malloc(sizeof(char) * len));
 
-		HMAC_CTX ctx;
-		HMAC_CTX_init(&ctx);
+		HMAC_CTX_WRAP ctx;
+		HMAC_CTX_WRAP_INIT(ctx);
 
-		HMAC_Init_ex(&ctx, key.c_str(), static_cast<int>(key.length()), EVP_sha1(), nullptr);
-		HMAC_Update(&ctx, reinterpret_cast<const unsigned char*>(data.c_str()), static_cast<int>(data.length()));
-		HMAC_Final(&ctx, result, &len);
-		HMAC_CTX_cleanup(&ctx);
+		HMAC_Init_ex(HMAC_CTX_WRAP_PTR(ctx), key.c_str(), static_cast<int>(key.length()), EVP_sha1(), nullptr);
+		HMAC_Update(HMAC_CTX_WRAP_PTR(ctx), reinterpret_cast<const unsigned char*>(data.c_str()), static_cast<int>(data.length()));
+		HMAC_Final(HMAC_CTX_WRAP_PTR(ctx), result, &len);
+		HMAC_CTX_WRAP_CLEANUP(ctx);
 
 		auto signature = base64_encode(result, len);
 		free(result);
@@ -144,7 +144,7 @@ namespace azha {
 
 		return ss.str();
 	}
-	
+
 	const std::string OAuth::signing_key() {
 		std::stringstream ss;
 

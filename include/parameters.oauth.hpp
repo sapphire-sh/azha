@@ -9,22 +9,24 @@ namespace azha {
 			namespace OAuth {
 				class RequestTokenParameters : public ITwitterParameters {
 				public:
-					METHOD(RequestMethod::POST);
-					URL("https://api.twitter.com/oauth/request_token");
-					
-					PARAMETER_STRING(RequestTokenParameters, oauth_callback);
-					PARAMETER_STRING(RequestTokenParameters, x_auth_access_type);
+					INIT(RequestTokenParameters)
+					METHOD(RequestMethod::POST)
+					URL("https://api.twitter.com/oauth/request_token")
+
+					PARAMETER(std::string, oauth_callback)
+					PARAMETER(std::string, x_auth_access_type)
 				};
 				
 				class AccessTokenParameters : public ITwitterParameters {
 				public:
-					METHOD(RequestMethod::POST);
-					URL("https://api.twitter.com/oauth/access_token");
-					
-					PARAMETER_STRING(AccessTokenParameters, x_auth_password);
-					PARAMETER_STRING(AccessTokenParameters, x_auth_username);
-					PARAMETER_STRING(AccessTokenParameters, x_auth_mode);
-					PARAMETER_STRING(AccessTokenParameters, oauth_verifier);
+					INIT(AccessTokenParameters)
+					METHOD(RequestMethod::POST)
+					URL("https://api.twitter.com/oauth/access_token")
+
+					PARAMETER(std::string, x_auth_password)
+					PARAMETER(std::string, x_auth_username)
+					PARAMETER(std::string, x_auth_mode)
+					PARAMETER(std::string, oauth_verifier)
 				};
 			}
 		}
