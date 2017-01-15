@@ -81,7 +81,7 @@ namespace std
 
 #define INIT(param_type_name)\
 	using this_ref_type = param_type_name&;\
-	virtual ~##param_type_name() {}
+	virtual ~param_type_name() {}
 
 #define PARAMETER(param_type, param_name)\
   PARAMETER_ALIAS(param_type, param_name, param_name)
