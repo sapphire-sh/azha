@@ -10,7 +10,7 @@ namespace azha {
 	class OAuth {
 	public:
 		OAuth();
-		
+
 		OAuth& oauth_consumer_key(const std::string &_oauth_consumer_key) {
 			parameters["oauth_consumer_key"] = _oauth_consumer_key;
 			return *this;
@@ -51,7 +51,7 @@ namespace azha {
 			parameters["oauth_version"] = _oauth_version;
 			return *this;
 		}
-		
+
 		const std::string &oauth_consumer_key() {
 			return parameters["oauth_consumer_key"];
 		}
