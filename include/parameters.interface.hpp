@@ -24,9 +24,6 @@
 #define POSITIONAL_SPRINTF(buffer, size, format, ...) sprintf(buffer, format, __VA_ARGS__)
 #endif
 
-#define URL_ARG(arg) URL_ARG_(arg)
-#define URL_ARG_(arg) , parameters.at(STRFY(arg)).c_str()
-
 #define URL_FORMAT(gen)\
 private:\
 	mutable std::string _url;\
