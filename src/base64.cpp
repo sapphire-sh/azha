@@ -28,7 +28,7 @@
 #include "base64.hpp"
 #include <iostream>
 
-static const std::string base64_chars =
+static const char * const base64_chars =
 "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 "abcdefghijklmnopqrstuvwxyz"
 "0123456789+/";
@@ -81,6 +81,11 @@ std::string base64_encode(unsigned char const* bytes_to_encode, unsigned int in_
 	
 }
 
+inline int strfnd(const char *str, char ch)
+{
+  return static_cast<int>(strchr(str, ch) - str);
+}
+
 std::string base64_decode(std::string const& encoded_string) {
 	int in_len = encoded_string.size();
 	int i = 0;
@@ -92,8 +97,9 @@ std::string base64_decode(std::string const& encoded_string) {
 	while (in_len-- && ( encoded_string[in_] != '=') && is_base64(encoded_string[in_])) {
 		char_array_4[i++] = encoded_string[in_]; in_++;
 		if (i ==4) {
-			for (i = 0; i <4; i++)
-				char_array_4[i] = base64_chars.find(char_array_4[i]);
+			for (i = 0; i <4; i++) {
+				char_array_4[i] = strfnd(base64_chars, char_array_4[i]);
+			}
 			
 			char_array_3[0] = (char_array_4[0] << 2) + ((char_array_4[1] & 0x30) >> 4);
 			char_array_3[1] = ((char_array_4[1] & 0xf) << 4) + ((char_array_4[2] & 0x3c) >> 2);
@@ -110,7 +116,7 @@ std::string base64_decode(std::string const& encoded_string) {
 			char_array_4[j] = 0;
 		
 		for (j = 0; j <4; j++)
-			char_array_4[j] = base64_chars.find(char_array_4[j]);
+			char_array_4[j] = strfnd(base64_chars, char_array_4[j]);
 		
 		char_array_3[0] = (char_array_4[0] << 2) + ((char_array_4[1] & 0x30) >> 4);
 		char_array_3[1] = ((char_array_4[1] & 0xf) << 4) + ((char_array_4[2] & 0x3c) >> 2);
