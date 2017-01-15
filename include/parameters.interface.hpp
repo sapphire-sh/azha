@@ -43,8 +43,9 @@ using param_arg_type = typename std::conditional<std::is_arithmetic<param_type>:
 template<typename param_type>
 using param_return_type = typename std::conditional<std::is_arithmetic<param_type>::value, param_type, typename std::add_lvalue_reference<typename std::add_const<param_type>::type>::type>::type;
 
+// clang bug - do not make *delete* this function
 template<typename ret>
-param_return_type<ret> from_string(const std::string &val) = delete;
+param_return_type<ret> from_string(const std::string &val);
 
 template<>
 inline double from_string<double>(const std::string &val) {
