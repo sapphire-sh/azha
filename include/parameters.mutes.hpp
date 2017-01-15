@@ -9,19 +9,23 @@ namespace azha {
 			namespace Mutes {
 				namespace Users {
 					class IdsParameters : public ITwitterParameters {
-					INIT(IdsParameters)
+					public:
+						INIT(IdsParameters)
 						METHOD(RequestMethod::GET)
-					URL("https://api.twitter.com/1.1/mutes/users/ids.json")
-					PARAMETER(uint64_t, cursor)
+						URL("https://api.twitter.com/1.1/mutes/users/ids.json")
+
+						PARAMETER(uint64_t, cursor)
 					};
 					
 					class ListParameters : public ITwitterParameters {
-					INIT(ListParameters)
+					public:
+						INIT(ListParameters)
 						METHOD(RequestMethod::GET)
-					URL("https://api.twitter.com/1.1/mutes/users/list.json")
-					PARAMETER(uint64_t, cursor)
-					PARAMETER(bool, include_entities)
-					PARAMETER(bool, skip_status)
+						URL("https://api.twitter.com/1.1/mutes/users/list.json")
+
+						PARAMETER(uint64_t, cursor)
+						PARAMETER(bool, include_entities)
+						PARAMETER(bool, skip_status)
 					};
 				}
 			}
@@ -31,19 +35,23 @@ namespace azha {
 			namespace Mutes {
 				namespace Users {
 					class CreateParameters : public ITwitterParameters {
-					INIT(CreateParameters)
+					public:
+						INIT(CreateParameters)
 						METHOD(RequestMethod::POST)
-					URL("https://api.twitter.com/1.1/mutes/users/create.json")
-					PARAMETER(std::string, screen_name)
-					PARAMETER(uint64_t, user_id)
+						URL("https://api.twitter.com/1.1/mutes/users/create.json")
+
+						PARAMETER(std::string, screen_name)
+						PARAMETER(uint64_t, user_id)
 					};
 					
 					class DestroyParameters : public ITwitterParameters {
-					INIT(DestroyParameters)
+					public:
+						INIT(DestroyParameters)
 						METHOD(RequestMethod::POST)
-					URL("https://api.twitter.com/1.1/mutes/users/destroy.json")
-					PARAMETER(std::string, screen_name)
-					PARAMETER(uint64_t, user_id)
+						URL("https://api.twitter.com/1.1/mutes/users/destroy.json")
+
+						PARAMETER(std::string, screen_name)
+						PARAMETER(uint64_t, user_id)
 					};
 				}
 			}
