@@ -52,7 +52,7 @@ if(CURL_FOUND)
 	)
 endif()
 
-find_package(OPENSSL REQUIRED)
+find_package(OpenSSL REQUIRED)
 if(OPENSSL_FOUND)
 	list(APPEND AZHA_INC_DIRS
 		${OPENSSL_INCLUDE_DIR}

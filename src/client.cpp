@@ -1,3 +1,5 @@
+#include <cstdlib>
+#include <cstring>
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -18,21 +20,21 @@ namespace azha {
 	Client::~Client() {
 		curl_global_cleanup();
 	}
-	
+
 	void Client::consumer_key(const std::string &_consumer_key, const std::string &_consumer_secret) {
 		_oauth->oauth_consumer_key(_consumer_key);
 		_oauth->oauth_consumer_secret(_consumer_secret);
 	}
-	
+
 	void Client::access_token(const std::string &_access_token, const std::string &_access_token_secret) {
 		_oauth->oauth_token(_access_token);
 		_oauth->oauth_token_secret(_access_token_secret);
 	}
-	
+
 	std::future<Client::ResultType> Client::request(const parameters::ITwitterParameters &parameters) {
 		return request(parameters.request_method(), parameters.url(), parameters.parameters);
 	}
-	
+
 	std::future<Client::ResultType> Client::request(const parameters::RequestMethod &method, const std::string &url, const parameters::RequestParams &parameters) {
 		return std::async(std::launch::async, &Client::request_internal, this, method, url, parameters);
 	}
@@ -46,7 +48,7 @@ namespace azha {
 
 		data.memory = reinterpret_cast<char*>(malloc(1));
 		data.size = 0;
-		
+
 		curl = curl_easy_init();
 
 		if (curl == nullptr) {

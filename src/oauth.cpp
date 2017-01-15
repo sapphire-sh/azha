@@ -83,6 +83,7 @@ namespace azha {
 	std::string OAuth::calculate_signature(const parameters::RequestMethod &method, const std::string &url, const parameters::RequestParams &parameters) {
 		auto key = signing_key();
 		auto data = signature_base_string(method, url, parameters);
+    
 		unsigned char* result;
 		unsigned int len = 20;
 

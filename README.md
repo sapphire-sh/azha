@@ -1,4 +1,7 @@
 # azha
+
+[![Build Status](https://travis-ci.org/sapphiredev/azha.svg?branch=master)](https://travis-ci.org/sapphiredev/azha)
+
 azha is a pure C++ Twitter library.
 
 ## Installation
