@@ -88,6 +88,11 @@ inline int strfnd(const char *str, char ch)
   return static_cast<int>(strchr(str, ch) - str);
 }
 
+inline int strfnd(const char *str, char ch)
+{
+  return static_cast<int>(strchr(str, ch) - str);
+}
+
 std::string base64_decode(std::string const& encoded_string) {
 	int in_len = static_cast<int>(encoded_string.size());
 	int i = 0;
@@ -102,7 +107,7 @@ std::string base64_decode(std::string const& encoded_string) {
 			for (i = 0; i <4; i++) {
 				char_array_4[i] = strfnd(base64_chars, char_array_4[i]);
 			}
-
+      
 			char_array_3[0] = (char_array_4[0] << 2) + ((char_array_4[1] & 0x30) >> 4);
 			char_array_3[1] = ((char_array_4[1] & 0xf) << 4) + ((char_array_4[2] & 0x3c) >> 2);
 			char_array_3[2] = ((char_array_4[2] & 0x3) << 6) + char_array_4[3];
@@ -119,7 +124,7 @@ std::string base64_decode(std::string const& encoded_string) {
 
 		for (j = 0; j <4; j++)
 			char_array_4[j] = strfnd(base64_chars, char_array_4[j]);
-
+    
 		char_array_3[0] = (char_array_4[0] << 2) + ((char_array_4[1] & 0x30) >> 4);
 		char_array_3[1] = ((char_array_4[1] & 0xf) << 4) + ((char_array_4[2] & 0x3c) >> 2);
 		char_array_3[2] = ((char_array_4[2] & 0x3) << 6) + char_array_4[3];
