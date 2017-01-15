@@ -44,7 +44,7 @@ template<typename param_type>
 using param_return_type = typename std::conditional<std::is_arithmetic<param_type>::value, param_type, typename std::add_lvalue_reference<typename std::add_const<param_type>::type>::type>::type;
 
 template<typename ret>
-ret from_string(const std::string &val);
+param_return_type<ret> from_string(const std::string &val);
 
 template<>
 inline double from_string<double>(const std::string &val) {
@@ -59,6 +59,11 @@ inline bool from_string<bool>(const std::string &val) {
 template<>
 inline uint64_t from_string<uint64_t>(const std::string &val) {
 	return std::stoull(val);
+}
+
+template<>
+inline const std::string &from_string<std::string>(const std::string &val) {
+	return val;
 }
 
 namespace std
