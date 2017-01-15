@@ -10,7 +10,7 @@ namespace azha {
 	class OAuth {
 	public:
 		OAuth();
-		
+
 		OAuth& oauth_consumer_key(const std::string &_oauth_consumer_key) {
 			parameters["oauth_consumer_key"] = _oauth_consumer_key;
 			return *this;
@@ -51,7 +51,7 @@ namespace azha {
 			parameters["oauth_version"] = _oauth_version;
 			return *this;
 		}
-		
+
 		const std::string &oauth_consumer_key() {
 			return parameters["oauth_consumer_key"];
 		}
@@ -82,18 +82,18 @@ namespace azha {
 		const std::string &oauth_version() {
 			return parameters["oauth_version"];
 		}
-		
-		const std::string header_string(const parameters::RequestMethod &method, const std::string &url, const parameters::RequestParams &parameters);
-		const std::string parameter_string(const parameters::RequestParams &parameters);
+
+		std::string header_string(const parameters::RequestMethod &method, const std::string &url, const parameters::RequestParams &parameters);
+		std::string parameter_string(const parameters::RequestParams &parameters);
 	private:
 		std::unordered_map<std::string, std::string> parameters;
-		
-		static const std::string generate_nonce();
-		static const uint64_t generate_timestamp();
-		
-		const std::string calculate_signature(const parameters::RequestMethod &method, const std::string &url, const parameters::RequestParams &parameters);
-		
-		const std::string signature_base_string(const parameters::RequestMethod &method, const std::string &url, const parameters::RequestParams &parameters);
+
+		static std::string generate_nonce();
+		static uint64_t generate_timestamp();
+
+		std::string calculate_signature(const parameters::RequestMethod &method, const std::string &url, const parameters::RequestParams &parameters);
+
+		std::string signature_base_string(const parameters::RequestMethod &method, const std::string &url, const parameters::RequestParams &parameters);
 		const std::string signing_key();
 	};
 }
