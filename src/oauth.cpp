@@ -1,13 +1,26 @@
-#include <iostream>
 #include <ctime>
 #include <map>
 #include <sstream>
 
 #include <curl/curl.h>
 #include <openssl/hmac.h>
+#include <openssl/evp.h>
 
 #include "base64.hpp"
 #include "oauth.hpp"
+#include <memory>
+
+#if OPENSSL_VERSION_NUMBER < 0x10100000L
+	#define HMAC_CTX_WRAP HMAC_CTX
+	#define HMAC_CTX_WRAP_INIT(ctx) HMAC_CTX_init(&ctx);
+	#define HMAC_CTX_WRAP_PTR(ctx) &ctx
+	#define HMAC_CTX_WRAP_CLEANUP(ctx) HMAC_CTX_cleanup(&ctx)
+#else
+	#define HMAC_CTX_WRAP HMAC_CTX *
+	#define HMAC_CTX_WRAP_INIT(ctx) ctx = HMAC_CTX_new();
+	#define HMAC_CTX_WRAP_PTR(ctx) ctx
+	#define HMAC_CTX_WRAP_CLEANUP(ctx) HMAC_CTX_free(ctx)
+#endif
 
 namespace azha {
 	OAuth::OAuth() {
@@ -68,29 +81,23 @@ namespace azha {
 	}
 	
 	const std::string OAuth::calculate_signature(const parameters::RequestMethod &method, const std::string &url, const parameters::RequestParams &parameters) {
-		std::string key_str = signing_key();
-		char key[key_str.size() + 1];
-		strcpy(key, key_str.c_str());
-		
-		std::string data_str = signature_base_string(method, url, parameters);
-		char data[data_str.size() + 1];
-		strcpy(data, data_str.c_str());
-		
+		std::string key = signing_key();
+		std::string data = signature_base_string(method, url, parameters);
 		unsigned char* result;
 		unsigned int len = 20;
-		
-		result = (unsigned char*)malloc(sizeof(char) * len);
-		
-		HMAC_CTX ctx;
-		HMAC_CTX_init(&ctx);
-		
-		HMAC_Init_ex(&ctx, key, strlen(key), EVP_sha1(), nullptr);
-		HMAC_Update(&ctx, (unsigned char*)&data, strlen(data));
-		HMAC_Final(&ctx, result, &len);
-		HMAC_CTX_cleanup(&ctx);
-		
-		std::string signature = base64_encode(result, len);
-		
+
+		result = static_cast<unsigned char*>(malloc(sizeof(char) * len));
+
+		HMAC_CTX_WRAP ctx;
+		HMAC_CTX_WRAP_INIT(ctx);
+
+		HMAC_Init_ex(HMAC_CTX_WRAP_PTR(ctx), key.c_str(), static_cast<int>(key.length()), EVP_sha1(), nullptr);
+		HMAC_Update(HMAC_CTX_WRAP_PTR(ctx), reinterpret_cast<const unsigned char*>(data.c_str()), static_cast<int>(data.length()));
+		HMAC_Final(HMAC_CTX_WRAP_PTR(ctx), result, &len);
+		HMAC_CTX_WRAP_CLEANUP(ctx);
+
+		auto signature = base64_encode(result, len);
+
 		free(result);
 		
 		return signature;
