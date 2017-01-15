@@ -25,9 +25,9 @@ namespace azha {
 		CURL* curl = curl_easy_init();
 		
 		std::stringstream ss;
-		
+
 		ss << "OAuth ";
-		
+
 		for(auto&& iter : this->parameters) {
 			auto found = iter.first.find_last_of("_");
 			std::string token = iter.first.substr(found + 1);
@@ -46,24 +46,24 @@ namespace azha {
 		std::string h_str = ss.str();
 		h_str.pop_back();
 		h_str.pop_back();
-		
+
 		return h_str;
 	}
 
 	std::string OAuth::generate_nonce() {
 		static const char characters[] = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-		
+
 		std::stringstream ss;
-		
-		srand(generate_timestamp());
-		for (int i = 0; i < 32; ++i) {
+
+		srand(static_cast<unsigned int>(generate_timestamp()));
+		for (auto i = 0; i < 32; ++i) {
 			ss << characters[rand() % (sizeof(characters) - 1)];
 		}
-		
+
 		return ss.str();
 	}
 
-  uint64_t OAuth::generate_timestamp() {
+	uint64_t OAuth::generate_timestamp() {
 		return std::time(nullptr);
 	}
 
@@ -87,15 +87,15 @@ namespace azha {
 		std::string signature = base64_encode(result, len);
 		
 		free(result);
-		
+
 		return signature;
 	}
 
 	std::string OAuth::parameter_string(const parameters::RequestParams &parameters) {
 		CURL* curl = curl_easy_init();
-		
+
 		std::map<std::string, std::string> p;
-		
+
 		for(auto&& iter : this->parameters) {
 			auto found = iter.first.find_last_of("_");
 			std::string k = iter.first.substr(found + 1);
@@ -106,24 +106,24 @@ namespace azha {
 		for(auto&& iter : parameters) {
 			p[iter.first] = iter.second;
 		}
-		
+
 		std::stringstream ss;
-		
+
 		for(auto&& iter : p) {
 			ss << iter.first << "=" << curl_easy_escape(curl, iter.second.c_str(), iter.second.size()) << "&";
 		}
 		
 		std::string parameter_string = ss.str();
 		parameter_string.pop_back();
-		
+
 		return parameter_string;
 	}
 
 	std::string OAuth::signature_base_string(const parameters::RequestMethod &method, const std::string &url, const parameters::RequestParams &parameters) {
 		auto curl = curl_easy_init();
-		
+
 		std::stringstream ss;
-		
+
 		ss << (method == parameters::RequestMethod::POST ? "POST&" : "GET&");
 		ss << curl_easy_escape(curl, url.c_str(), url.size()) << "&";
 		
@@ -135,12 +135,12 @@ namespace azha {
 	
 	const std::string OAuth::signing_key() {
 		std::stringstream ss;
-		
+
 		ss << oauth_consumer_secret() << "&";
 		if(oauth_token_secret() != "") {
 			ss << oauth_token_secret();
 		}
-		
+
 		return ss.str();
 	}
 }

@@ -41,8 +41,8 @@ namespace azha {
 	{
 		CURL* curl;
 		CURLcode res;
-		
-    struct MemoryStruct data;
+
+		struct MemoryStruct data;
 
 		data.memory = reinterpret_cast<char*>(malloc(1));
 		data.size = 0;
@@ -109,7 +109,7 @@ namespace azha {
 		std::stringstream ss;
 		ss << query_string;
 		std::unordered_map<std::string, std::string> result;
-		
+
 		while(getline(ss, key, '=') && getline(ss, value, '&')) {
 			result[key] = value;
 		}
@@ -125,7 +125,7 @@ namespace azha {
 		for(const auto& iter : parameters) {
 			p[iter.first] = iter.second;
 		}
-		
+
 		std::stringstream ss;
 
 		for(const auto& iter : p) {
@@ -134,7 +134,7 @@ namespace azha {
 		
 		std::string parameter_string = ss.str();
 		parameter_string.pop_back();
-		
+
 		return parameter_string;
 	}
 	
@@ -147,11 +147,11 @@ namespace azha {
 			printf("not enough memory (realloc returned NULL)\n");
 			return 0;
 		}
-		
+
 		memcpy(&(mem->memory[mem->size]), contents, realsize);
 		mem->size += realsize;
 		mem->memory[mem->size] = 0;
-		
+
 		return realsize;
 	}
 }
