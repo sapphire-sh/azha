@@ -29,8 +29,8 @@ namespace azha {
 		oauth_timestamp(generate_timestamp());
 		oauth_version("1.0");
 	}
-	
-	const std::string OAuth::header_string(const parameters::RequestMethod &method, const std::string &url, const parameters::RequestParams &parameters) {
+
+	std::string OAuth::header_string(const parameters::RequestMethod &method, const std::string &url, const parameters::RequestParams &parameters) {
 		oauth_nonce(generate_nonce());
 		oauth_timestamp(generate_timestamp());
 		oauth_signature(calculate_signature(method, url, parameters));
@@ -62,8 +62,8 @@ namespace azha {
 		
 		return h_str;
 	}
-	
-	const std::string OAuth::generate_nonce() {
+
+	std::string OAuth::generate_nonce() {
 		static const char characters[] = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		
 		std::stringstream ss;
@@ -75,35 +75,36 @@ namespace azha {
 		
 		return ss.str();
 	}
-	
-	const uint64_t OAuth::generate_timestamp() {
-		return std::time(0);
+
+	uint64_t OAuth::generate_timestamp() {
+		return std::time(nullptr);
 	}
-	
-	const std::string OAuth::calculate_signature(const parameters::RequestMethod &method, const std::string &url, const parameters::RequestParams &parameters) {
-		std::string key = signing_key();
-		std::string data = signature_base_string(method, url, parameters);
+
+	std::string OAuth::calculate_signature(const parameters::RequestMethod &method, const std::string &url, const parameters::RequestParams &parameters) {
+		auto key = signing_key();
+		auto data = signature_base_string(method, url, parameters);
+
 		unsigned char* result;
 		unsigned int len = 20;
+		
+		result = (unsigned char*)malloc(sizeof(char) * len);
+		
+		HMAC_CTX ctx;
+		HMAC_CTX_init(&ctx);
 
-		result = static_cast<unsigned char*>(malloc(sizeof(char) * len));
-
-		HMAC_CTX_WRAP ctx;
-		HMAC_CTX_WRAP_INIT(ctx);
-
-		HMAC_Init_ex(HMAC_CTX_WRAP_PTR(ctx), key.c_str(), static_cast<int>(key.length()), EVP_sha1(), nullptr);
-		HMAC_Update(HMAC_CTX_WRAP_PTR(ctx), reinterpret_cast<const unsigned char*>(data.c_str()), static_cast<int>(data.length()));
-		HMAC_Final(HMAC_CTX_WRAP_PTR(ctx), result, &len);
-		HMAC_CTX_WRAP_CLEANUP(ctx);
-
-		auto signature = base64_encode(result, len);
-
+		HMAC_Init_ex(&ctx, key.c_str(), static_cast<int>(key.length()), EVP_sha1(), nullptr);
+		HMAC_Update(&ctx, reinterpret_cast<const unsigned char*>(data.c_str()), static_cast<int>(data.length()));
+		HMAC_Final(&ctx, result, &len);
+		HMAC_CTX_cleanup(&ctx);
+		
+		std::string signature = base64_encode(result, len);
+		
 		free(result);
 		
 		return signature;
 	}
-	
-	const std::string OAuth::parameter_string(const parameters::RequestParams &parameters) {
+
+	std::string OAuth::parameter_string(const parameters::RequestParams &parameters) {
 		CURL* curl = curl_easy_init();
 		
 		std::map<std::string, std::string> p;
@@ -130,9 +131,9 @@ namespace azha {
 		
 		return parameter_string;
 	}
-	
-	const std::string OAuth::signature_base_string(const parameters::RequestMethod &method, const std::string &url, const parameters::RequestParams &parameters) {
-		CURL* curl = curl_easy_init();
+
+	std::string OAuth::signature_base_string(const parameters::RequestMethod &method, const std::string &url, const parameters::RequestParams &parameters) {
+		auto curl = curl_easy_init();
 		
 		std::stringstream ss;
 		

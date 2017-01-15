@@ -12,9 +12,9 @@
 namespace azha {
 	class RequestFailedException : public std::exception {
 	public:
-		RequestFailedException(const std::string &_reason) : reason(_reason) {}
+	  explicit RequestFailedException(const std::string &_reason) : reason(_reason) {}
 		std::string reason;
-		const char* what() const noexcept {
+		const char* what() const noexcept override {
 			return reason.c_str();
 		}
 	};
@@ -41,9 +41,9 @@ namespace azha {
 		
 		static size_t write_callback(void *contents, size_t size, size_t nmemb, void *userp);
 		
-		static const std::unordered_map<std::string, std::string> parse_query_string(const std::string &query_string);
-		static const std::string parameter_string(const parameters::RequestParams &parameters);
-		ResultType request_internal(const parameters::RequestMethod &method, const std::string &url, const parameters::RequestParams &parameters);
+		static std::unordered_map<std::string, std::string> &&parse_query_string(const std::string &query_string);
+		static std::string parameter_string(const parameters::RequestParams &parameters);
+		ResultType request_internal(const parameters::RequestMethod &method, const std::string &url, const parameters::RequestParams &parameters) const;
 	};
 }
 
