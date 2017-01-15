@@ -49,59 +49,56 @@ namespace azha {
 		
 		curl = curl_easy_init();
 		
-		if(curl) {
-			std::stringstream ss;
-			
-			ss << "Authorization: " << _oauth->header_string(method, url, parameters);
-			
-			struct curl_slist *chunk = nullptr;
-			chunk = curl_slist_append(chunk, ss.str().c_str());
-			
-			res = curl_easy_setopt(curl, CURLOPT_HTTPHEADER, chunk);
-			
-			curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
-			curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
-			
-			std::string parameter_string;
-			if(method == parameters::RequestMethod::POST) {
-				parameter_string = Client::parameter_string(parameters);
-				std::cout << parameter_string << "\n";
-				curl_easy_setopt(curl, CURLOPT_POSTFIELDS, parameter_string.c_str());
-			}
-			
-			curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_callback);
-			curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void*)&data);
-			
-			res = curl_easy_perform(curl);
-			
-			if(res != CURLE_OK) {
-				ss.str("curl_easy_perform() failed: ");
-				ss << curl_easy_strerror(res);
-				throw new RequestFailedException(ss.str());
-			}
-			else {
-				std::string response(data.memory);
-				std::cout << response << "\n";
-				
-				char *content_type;
-				curl_easy_getinfo(curl, CURLINFO_CONTENT_TYPE, &content_type);
+		if (curl == nullptr) {
+			throw RequestFailedException("curl init failed");
+		}
 
-				if(std::string(content_type) == "text/html;charset=utf-8") {
-					return parse_query_string(response);
-				}
-				else {
-					return parameters::RequestParams();
-				}
-			}
-			
-			curl_easy_cleanup(curl);
-			curl_slist_free_all(chunk);
-			
-			free(data.memory);
+		std::stringstream ss;
+
+		ss << "Authorization: " << _oauth->header_string(method, url, parameters);
+
+		struct curl_slist *chunk = nullptr;
+		chunk = curl_slist_append(chunk, ss.str().c_str());
+
+		curl_easy_setopt(curl, CURLOPT_HTTPHEADER, chunk);
+		curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+		curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
+
+		std::string parameter_string;
+		if(method == parameters::RequestMethod::POST) {
+			parameter_string = Client::parameter_string(parameters);
+			std::cout << parameter_string << "\n";
+			curl_easy_setopt(curl, CURLOPT_POSTFIELDS, parameter_string.c_str());
 		}
-		else {
-			throw new RequestFailedException("curl init failed");
+
+		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_callback);
+		curl_easy_setopt(curl, CURLOPT_WRITEDATA, static_cast<void*>(&data));
+
+		res = curl_easy_perform(curl);
+
+		if(res != CURLE_OK) {
+			ss.str("curl_easy_perform() failed: ");
+			ss << curl_easy_strerror(res);
+			throw RequestFailedException(ss.str());
 		}
+
+		std::string response(data.memory);
+		std::cout << response << "\n";
+
+		char *content_type;
+		curl_easy_getinfo(curl, CURLINFO_CONTENT_TYPE, &content_type);
+		bool contents_is_html = strncmp(content_type, "text/html;charset=utf-8", sizeof(content_type)) == 0;
+
+		curl_easy_cleanup(curl);
+		curl_slist_free_all(chunk);
+
+		free(data.memory);
+
+		if(contents_is_html) {
+			return parse_query_string(response);
+		}
+
+		return parameters::RequestParams();
 	}
 
 	std::unordered_map<std::string, std::string> &&Client::parse_query_string(const std::string &query_string) {
