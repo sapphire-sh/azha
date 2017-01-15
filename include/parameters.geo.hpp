@@ -13,14 +13,7 @@ namespace azha {
 				public:
 					INIT(IdParameters)
 					METHOD(RequestMethod::GET)
-					const std::string &request_url() const override {
-						std::ostringstream ss;
-						ss << "https://api.twitter.com/1.1/geo/id/";
-						ss << parameters.at("place_id");
-						ss << ".json";
-						const std::string _url = ss.str();
-						return _url;
-					}
+					URL_FORMAT("https://api.twitter.com/1.1/geo/id/" << parameters.at("place_id") << ".json")
 
 					PARAMETER(std::string, place_id)
 				};

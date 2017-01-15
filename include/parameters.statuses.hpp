@@ -81,14 +81,7 @@ namespace azha {
 					public:
 						INIT(ListParameters)
 						METHOD(RequestMethod::GET)
-						const std::string &request_url() const override {
-							std::stringstream ss;
-							ss << "https://api.twitter.com/1.1/statuses/retweets/";
-							ss << parameters.at("id");
-							ss << ".json";
-							const std::string _url = ss.str();
-							return _url;
-						}
+						URL_FORMAT("https://api.twitter.com/1.1/statuses/retweets/" << parameters.at("id") << ".json")
 
 						PARAMETER(uint64_t, id)
 						PARAMETER(uint64_t, count)
@@ -147,14 +140,7 @@ namespace azha {
 				public:
 					INIT(DestroyParameters)
 					METHOD(RequestMethod::POST)
-					const std::string &request_url() const override {
-						std::stringstream ss;
-						ss << "https://api.twitter.com/1.1/statuses/destroy/";
-						ss << parameters.at("id");
-						ss << ".json";
-						const std::string _url = ss.str();
-						return _url;
-					}
+					URL_FORMAT("https://api.twitter.com/1.1/statuses/destroy/" << parameters.at("id") << ".json")
 
 					PARAMETER(uint64_t, id)
 					PARAMETER(bool, trim_user)
@@ -164,14 +150,7 @@ namespace azha {
 				public:
 					INIT(RetweetParameters)
 					METHOD(RequestMethod::POST)
-					const std::string &request_url() const override {
-						std::stringstream ss;
-						ss << "https://api.twitter.com/1.1/statuses/retweet/";
-						ss << parameters.at("id");
-						ss << ".json";
-						const std::string _url = ss.str();
-						return _url;
-					}
+					URL_FORMAT("https://api.twitter.com/1.1/statuses/retweet/" << parameters.at("id") << ".json")
 
 					PARAMETER(uint64_t, id)
 					PARAMETER(bool, trim_user)
@@ -181,14 +160,7 @@ namespace azha {
 				public:
 					INIT(UnretweetParameters)
 					METHOD(RequestMethod::POST)
-					const std::string &request_url() const override {
-						std::stringstream ss;
-						ss << "https://api.twitter.com/1.1/statuses/unretweet/";
-						ss << parameters.at("id");
-						ss << ".json";
-						const std::string _url = ss.str();
-						return _url;
-					}
+					URL_FORMAT("https://api.twitter.com/1.1/statuses/unretweet/" << parameters.at("id") << ".json")
 
 					PARAMETER(uint64_t, id)
 					PARAMETER(bool, trim_user)

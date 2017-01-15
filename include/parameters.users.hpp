@@ -63,15 +63,7 @@ namespace azha {
 					public:
 						INIT(ListParameters)
 						METHOD(RequestMethod::GET)
-						const std::string &request_url() const override
-						{
-							std::stringstream ss;
-							ss << "https://api.twitter.com/1.1/users/suggestions/";
-							ss << parameters.at("slug");
-							ss << ".json";
-							const auto _url = ss.str();
-							return _url;
-						}
+						URL_FORMAT("https://api.twitter.com/1.1/users/suggestions/" << parameters.at("slug") << ".json")
 
 						PARAMETER(std::string, slug)
 						PARAMETER(std::string, lang)
@@ -81,15 +73,7 @@ namespace azha {
 					public:
 						INIT(MembersParameters)
 						METHOD(RequestMethod::GET)
-						const std::string &request_url() const override
-						{
-							std::stringstream ss;
-							ss << "https://api.twitter.com/1.1/users/suggestions/";
-							ss << parameters.at("slug");
-							ss << "/members.json";
-							const auto _url = ss.str();
-							return _url;
-						}
+						URL_FORMAT("https://api.twitter.com/1.1/users/suggestions/" << parameters.at("slug") << "/members.json")
 
 						PARAMETER(std::string, slug)
 					};

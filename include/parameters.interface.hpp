@@ -4,6 +4,7 @@
 #include <unordered_map>
 #include <type_traits>
 #include <string>
+#include <cstdio>
 
 #define METHOD(x)\
 	const RequestMethod &request_method() const {\
@@ -14,6 +15,28 @@
 #define URL(x)\
 	const std::string &request_url() const {\
 		static const std::string _url = x;\
+		return _url;\
+	}
+
+#if WIN32
+#define POSITIONAL_SPRINTF(buffer, size, format, ...) _sprintf_p(buffer, size, format, __VA_ARGS__)
+#else
+#define POSITIONAL_SPRINTF(buffer, size, format, ...) sprintf(buffer, format, __VA_ARGS__)
+#endif
+
+#define URL_ARG(arg) URL_ARG_(arg)
+#define URL_ARG_(arg) , parameters.at(STRFY(arg)).c_str()
+
+#define URL_FORMAT(gen)\
+private:\
+	mutable std::string _url;\
+public:\
+	const std::string &request_url() const override {\
+		if (_url.length() == 0) {\
+			std::ostringstream os;\
+			os << gen;\
+			_url.assign(os.str());\
+		}\
 		return _url;\
 	}
 

@@ -18,14 +18,7 @@ namespace azha {
 				public:
 					INIT(ShowParameters)
 					METHOD(RequestMethod::GET)
-					const std::string &request_url() const override {
-						std::stringstream ss;
-						ss << "https://api.twitter.com/1.1/saved_searches/show/";
-						ss << parameters.at("id");
-						ss << ".json";
-						const std::string _url = ss.str();
-						return _url;
-					}
+					URL_FORMAT("https://api.twitter.com/1.1/saved_searches/show/" << parameters.at("id") << ".json")
 
 					PARAMETER(uint64_t, id)
 				};
@@ -47,15 +40,8 @@ namespace azha {
 				public:
 					INIT(DestroyParameters)
 					METHOD(RequestMethod::POST)
-					const std::string &request_url() const override {
-						std::stringstream ss;
-						ss << "https://api.twitter.com/1.1/saved_searches/destroy/";
-						ss << parameters.at("id");
-						ss << ".json";
-						const std::string _url = ss.str();
-						return _url;
-					}
-				  
+					URL_FORMAT("https://api.twitter.com/1.1/saved_searches/destroy/" << parameters.at("id") << ".json")
+
 				  PARAMETER(uint64_t, id)
 				};
 			}
