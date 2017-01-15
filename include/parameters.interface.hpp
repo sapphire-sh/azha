@@ -41,7 +41,7 @@ template<typename param_type>
 using param_arg_type = typename std::conditional<std::is_arithmetic<param_type>::value, param_type, typename std::add_lvalue_reference<typename std::add_const<param_type>::type>::type>::type;
 
 template<typename param_type>
-using param_return_type = typename std::conditional<std::is_arithmetic<param_type>::value, typename std::add_const<param_type>::type, typename std::add_lvalue_reference<typename std::add_const<param_type>::type>::type>::type;
+using param_return_type = typename std::conditional<std::is_arithmetic<param_type>::value, param_type, typename std::add_lvalue_reference<typename std::add_const<param_type>::type>::type>::type;
 
 template<typename ret>
 ret from_string(const std::string &val);
