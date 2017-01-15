@@ -37,7 +37,8 @@ namespace azha {
 		return std::async(std::launch::async, &Client::request_internal, this, method, url, parameters);
 	}
 
-	Client::ResultType Client::request_internal(const parameters::RequestMethod &method, const std::string &url, const parameters::RequestParams &parameters) {
+	Client::ResultType Client::request_internal(const parameters::RequestMethod &method, const std::string &url, const parameters::RequestParams &parameters) const
+	{
 		CURL* curl;
 		CURLcode res;
 		
@@ -102,8 +103,8 @@ namespace azha {
 			throw new RequestFailedException("curl init failed");
 		}
 	}
-	
-	const std::unordered_map<std::string, std::string> Client::parse_query_string(const std::string &query_string) {
+
+	std::unordered_map<std::string, std::string> &&Client::parse_query_string(const std::string &query_string) {
 		std::string key, value;
 		std::stringstream ss;
 		ss << query_string;
@@ -112,23 +113,23 @@ namespace azha {
 		while(getline(ss, key, '=') && getline(ss, value, '&')) {
 			result[key] = value;
 		}
-		
-		return result;
+
+		return std::move(result);
 	}
-	
-	const std::string Client::parameter_string(const parameters::RequestParams &parameters) {
-		CURL* curl = curl_easy_init();
-		
+
+	std::string Client::parameter_string(const parameters::RequestParams &parameters) {
+		auto curl = curl_easy_init();
+
 		std::unordered_map<std::string, std::string> p;
-		
-		for(auto&& iter : parameters) {
+
+		for(const auto& iter : parameters) {
 			p[iter.first] = iter.second;
 		}
 		
 		std::stringstream ss;
-		
-		for(auto&& iter : p) {
-			ss << iter.first << "=" << curl_easy_escape(curl, iter.second.c_str(), iter.second.size()) << "&";
+
+		for(const auto& iter : p) {
+			ss << iter.first << "=" << curl_easy_escape(curl, iter.second.c_str(), static_cast<int>(iter.second.size())) << "&";
 		}
 		
 		std::string parameter_string = ss.str();
