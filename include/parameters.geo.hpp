@@ -22,7 +22,7 @@ namespace azha {
 						return _url;
 					}
 
-				  PARAMETER(std::string, place_id)
+					PARAMETER(std::string, place_id)
 				};
 				
 				class ReverseGeocodeParameters : public ITwitterParameters {
@@ -36,7 +36,7 @@ namespace azha {
 					PARAMETER(std::string, accuracy)
 					PARAMETER(std::string, granularity)
 					PARAMETER(uint64_t, max_results)
-					PARAMETER(std::string, callback)
+					// not sure PARAMETER(std::string, callback)
 				};
 				
 				class SearchParameters : public ITwitterParameters {
@@ -54,8 +54,7 @@ namespace azha {
 					PARAMETER(uint64_t, max_results)
 					PARAMETER(std::string, contained_within)
 					PARAMETER_ALIAS(std::string, attribute_street_address, attribute:street_address)
-
-					PARAMETER(std::string, callback)
+					// not sure PARAMETER(std::string, callback)
 				};
 			}
 		}
@@ -74,7 +73,7 @@ namespace azha {
 					PARAMETER(double, lat)
 					PARAMETER(double, lng)
 					PARAMETER_ALIAS(std::string, attribute_street_address, attribute:street_address)
-					PARAMETER(std::string, callback)
+					// not sure PARAMETER(std::string, callback)
 				};
 			}
 		}

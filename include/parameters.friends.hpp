@@ -8,9 +8,11 @@ namespace azha {
 		namespace GET {
 			namespace Friends {
 				class IdsParameters : public ITwitterParameters {
+				public:
 					INIT(IdsParameters)
 					METHOD(RequestMethod::GET)
 					URL("https://api.twitter.com/1.1/friends/ids.json")
+
 					PARAMETER(uint64_t, user_id)
 					PARAMETER(std::string, screen_name)
 					PARAMETER(uint64_t, cursor)
@@ -19,9 +21,11 @@ namespace azha {
 				};
 				
 				class ListParameters : public ITwitterParameters {
+				public:
 					INIT(ListParameters)
 					METHOD(RequestMethod::GET)
 					URL("https://api.twitter.com/1.1/friends/list.json")
+
 					PARAMETER(uint64_t, user_id)
 					PARAMETER(std::string, screen_name)
 					PARAMETER(uint64_t, cursor)

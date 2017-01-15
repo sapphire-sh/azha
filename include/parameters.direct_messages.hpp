@@ -8,9 +8,11 @@ namespace azha {
 		namespace GET {
 			namespace DirectMessages {
 				class ReceivedParameters : public ITwitterParameters {
+				public:
 					INIT(ReceivedParameters)
 					METHOD(RequestMethod::GET)
 					URL("https://api.twitter.com/1.1/direct_messages.json")
+
 					PARAMETER(uint64_t, since_id)
 					PARAMETER(uint64_t, max_id)
 					PARAMETER(uint64_t, count)
@@ -19,9 +21,11 @@ namespace azha {
 				};
 				
 				class SentParameters : public ITwitterParameters {
+				public:
 					INIT(SentParameters)
 					METHOD(RequestMethod::GET)
 					URL("https://api.twitter.com/1.1/direct_messages/sent.json")
+
 					PARAMETER(uint64_t, since_id)
 					PARAMETER(uint64_t, max_id)
 					PARAMETER(uint64_t, count)
@@ -30,9 +34,11 @@ namespace azha {
 				};
 				
 				class ShowParameters : public ITwitterParameters {
+				public:
 					INIT(ShowParameters)
 					METHOD(RequestMethod::GET)
 					URL("https://api.twitter.com/1.1/direct_messages/show.json")
+
 					PARAMETER(uint64_t, id)
 				};
 			}
@@ -41,17 +47,21 @@ namespace azha {
 		namespace POST {
 			namespace DirectMessages {
 				class DestroyParameters : public ITwitterParameters {
+				public:
 					INIT(DestroyParameters)
 					METHOD(RequestMethod::POST)
 					URL("https://api.twitter.com/1.1/direct_messages/destroy.json")
+
 					PARAMETER(uint64_t, id)
 					PARAMETER(bool, include_entities)
 				};
 				
 				class NewParameters : public ITwitterParameters {
+				public:
 					INIT(NewParameters)
 					METHOD(RequestMethod::POST)
 					URL("https://api.twitter.com/1.1/direct_messages/new.json")
+
 					PARAMETER(uint64_t, user_id)
 					PARAMETER(std::string, screen_name)
 					PARAMETER(std::string, text)
