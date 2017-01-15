@@ -7,13 +7,13 @@
 #include <cstdio>
 
 #define METHOD(x)\
-	const RequestMethod &request_method() const {\
+	const RequestMethod &request_method() const override {\
 		static const RequestMethod _request_method = x;\
 		return _request_method;\
 	}
 
 #define URL(x)\
-	const std::string &request_url() const {\
+	const std::string &request_url() const override {\
 		static const std::string _url = x;\
 		return _url;\
 	}
