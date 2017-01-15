@@ -9,21 +9,23 @@ namespace azha {
 			namespace Blocks {
 				class IdsParameters : public ITwitterParameters {
 				public:
-					METHOD(RequestMethod::GET);
-					URL("https://api.twitter.com/1.1/blocks/ids.json");
+					INIT(IdsParameters)
+					METHOD(RequestMethod::GET)
+					URL("https://api.twitter.com/1.1/blocks/ids.json")
 					
-					PARAMETER_BOOL(IdsParameters, stringify_ids);
-					PARAMETER_UINT64(IdsParameters, cursor);
+					PARAMETER(bool, stringify_ids)
+					PARAMETER(uint64_t, cursor)
 				};
 				
 				class ListParameters : public ITwitterParameters {
 				public:
-					METHOD(RequestMethod::GET);
-					URL("https://api.twitter.com/1.1/blocks/list.json");
+					INIT(ListParameters)
+					METHOD(RequestMethod::GET)
+					URL("https://api.twitter.com/1.1/blocks/list.json")
 					
-					PARAMETER_BOOL(ListParameters, include_entities);
-					PARAMETER_BOOL(ListParameters, skip_status);
-					PARAMETER_UINT64(ListParameters, cursor);
+					PARAMETER(bool, include_entities)
+					PARAMETER(bool, skip_status)
+					PARAMETER(uint64_t, cursor)
 				};
 			}
 		}
@@ -32,24 +34,26 @@ namespace azha {
 			namespace Blocks {
 				class CreateParameters : public ITwitterParameters {
 				public:
-					METHOD(RequestMethod::POST);
-					URL("https://api.twitter.com/1.1/blocks/create.json");
+					INIT(CreateParameters)
+					METHOD(RequestMethod::POST)
+					URL("https://api.twitter.com/1.1/blocks/create.json")
 					
-					PARAMETER_STRING(CreateParameters, screen_name);
-					PARAMETER_UINT64(CreateParameters, user_id);
-					PARAMETER_BOOL(CreateParameters, include_entities);
-					PARAMETER_BOOL(CreateParameters, skip_status);
+					PARAMETER(std::string, screen_name)
+					PARAMETER(uint64_t, user_id)
+					PARAMETER(bool, include_entities)
+					PARAMETER(bool, skip_status)
 				};
 				
 				class DestroyParameters : public ITwitterParameters {
 				public:
-					METHOD(RequestMethod::POST);
-					URL("https://api.twitter.com/1.1/blocks/destroy.json");
+					INIT(DestroyParameters)
+					METHOD(RequestMethod::POST)
+					URL("https://api.twitter.com/1.1/blocks/destroy.json")
 					
-					PARAMETER_STRING(DestroyParameters, screen_name);
-					PARAMETER_UINT64(DestroyParameters, user_id);
-					PARAMETER_BOOL(DestroyParameters, include_entities);
-					PARAMETER_BOOL(DestroyParameters, skip_status);
+					PARAMETER(std::string, screen_name)
+					PARAMETER(uint64_t, user_id)
+					PARAMETER(bool, include_entities)
+					PARAMETER(bool, skip_status)
 				};
 			}
 		}

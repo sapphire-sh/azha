@@ -9,12 +9,13 @@ namespace azha {
 			namespace Projects {
 				class ListParameters : public ITwitterParameters {
 				public:
-					METHOD(RequestMethod::GET);
-					URL("https://curator.twitter.com/broadcast/1/projects");
-					
-					PARAMETER_UINT64(ListParameters, limit);
-					PARAMETER_STRING(ListParameters, format);
-					PARAMETER_STRING(ListParameters, auth);
+					INIT(ListParameters)
+					METHOD(RequestMethod::GET)
+					URL("https://curator.twitter.com/broadcast/1/projects")
+
+					PARAMETER(uint64_t, limit)
+					PARAMETER(std::string, format)
+					PARAMETER(std::string, auth)
 				};
 			}
 		}

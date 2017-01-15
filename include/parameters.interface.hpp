@@ -2,55 +2,101 @@
 #define __PARAMETERS_INTERFACE_H__
 
 #include <unordered_map>
-#include <sstream>
+#include <type_traits>
 #include <string>
+#include <cstdio>
 
 #define METHOD(x)\
-	const RequestMethod &request_method() const {\
+	const RequestMethod &request_method() const override {\
 		static const RequestMethod _request_method = x;\
 		return _request_method;\
 	}
 
 #define URL(x)\
-	const std::string &url() const {\
+	const std::string &request_url() const override {\
 		static const std::string _url = x;\
 		return _url;\
 	}
 
-#define PARAMETER_BOOL(param_type, param_name)\
-	param_type& param_name(const bool &_param_name) {\
-		parameters[#param_name] = _param_name ? "true" : "false";\
-		return *this;\
-	}\
-	const bool param_name() {\
-		return (parameters[#param_name] == "true");\
+#if WIN32
+#define POSITIONAL_SPRINTF(buffer, size, format, ...) _sprintf_p(buffer, size, format, __VA_ARGS__)
+#else
+#define POSITIONAL_SPRINTF(buffer, size, format, ...) sprintf(buffer, format, __VA_ARGS__)
+#endif
+
+#define URL_FORMAT(gen)\
+private:\
+	mutable std::string _url;\
+public:\
+	const std::string &request_url() const override {\
+		if (_url.length() == 0) {\
+			std::ostringstream os;\
+			os << gen;\
+			_url.assign(os.str());\
+		}\
+		return _url;\
 	}
 
-#define PARAMETER_STRING(param_type, param_name)\
-	param_type& param_name(const std::string &_param_name) {\
-		parameters[#param_name] = _param_name;\
-		return *this;\
-	}\
-	const std::string& param_name() {\
-		return parameters[#param_name];\
+template<typename param_type>
+using param_arg_type = typename std::conditional<std::is_arithmetic<param_type>::value, param_type, typename std::add_lvalue_reference<typename std::add_const<param_type>::type>::type>::type;
+
+template<typename param_type>
+using param_return_type = typename std::conditional<std::is_arithmetic<param_type>::value, param_type, typename std::add_lvalue_reference<typename std::add_const<param_type>::type>::type>::type;
+
+// clang bug - do not make *delete* this function
+template<typename ret>
+param_return_type<ret> from_string(const std::string &val);
+
+template<>
+inline double from_string<double>(const std::string &val) {
+	return std::stod(val);
+}
+
+template<>
+inline bool from_string<bool>(const std::string &val) {
+	return val.compare("true") == 0;
+}
+
+template<>
+inline uint64_t from_string<uint64_t>(const std::string &val) {
+	return std::stoull(val);
+}
+
+template<>
+inline const std::string &from_string<std::string>(const std::string &val) {
+	return val;
+}
+
+namespace std
+{
+	inline std::string to_string(bool value) {
+		static const std::string t("true"), f("false");
+		return value ? t : f;
 	}
 
-#define PARAMETER_UINT64(param_type, param_name)\
-	param_type& param_name(const uint64_t &_param_name) {\
-		parameters[#param_name] = _param_name;\
-		return *this;\
-	}\
-	const uint64_t param_name() {\
-		return std::stoull(parameters[#param_name]);\
+	inline std::string to_string(const std::string &val)
+	{
+		return val;
 	}
+}
 
-#define PARAMETER_DOUBLE(param_type, param_name)\
-	param_type& param_name(const double &_param_name) {\
-		parameters[#param_name] = _param_name;\
+#define INIT(param_type_name)\
+	using this_ref_type = param_type_name&;\
+	virtual ~param_type_name() {}
+
+#define PARAMETER(param_type, param_name)\
+  PARAMETER_ALIAS(param_type, param_name, param_name)
+
+#define PARAMETER_ALIAS(param_type, param_name, param_alias)\
+	this_ref_type param_name(param_arg_type<param_type> _##param_name) {\
+		parameters[#param_alias] = std::move(std::to_string(_##param_name));\
 		return *this;\
 	}\
-	const double param_name() {\
-		return std::stod(parameters[#param_name]);\
+	bool is_set_##param_name() const {\
+		return parameters.find(#param_alias) != parameters.end();\
+	}\
+	param_return_type<param_type> param_name() const {\
+		return from_string<param_type>(parameters.at(#param_alias)); \
 	}
 
 namespace azha {
@@ -64,8 +110,9 @@ namespace azha {
 
 		class ITwitterParameters {
 		public:
+			virtual ~ITwitterParameters() {}
 			virtual const RequestMethod &request_method() const = 0;
-			virtual const std::string &url() const = 0;
+			virtual const std::string &request_url() const = 0;
 
 			RequestParams parameters;
 		};

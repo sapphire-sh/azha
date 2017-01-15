@@ -32,7 +32,7 @@ namespace azha {
 	}
 
 	std::future<Client::ResultType> Client::request(const parameters::ITwitterParameters &parameters) {
-		return request(parameters.request_method(), parameters.url(), parameters.parameters);
+		return request(parameters.request_method(), parameters.request_url(), parameters.parameters);
 	}
 
 	std::future<Client::ResultType> Client::request(const parameters::RequestMethod &method, const std::string &url, const parameters::RequestParams &parameters) {
