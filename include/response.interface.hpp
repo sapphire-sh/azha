@@ -6,6 +6,8 @@
 #include <unordered_map>
 #include <vector>
 
+#include <rapidjson/document.h>
+
 namespace azha {
 	namespace response {
 		typedef std::unordered_map<std::string, std::string> ResponseData;

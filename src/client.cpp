@@ -8,6 +8,7 @@
 #include <future>
 
 #include <curl/curl.h>
+#include <rapidjson/document.h>
 
 #include "client.hpp"
 
@@ -31,15 +32,15 @@ namespace azha {
 		_oauth->oauth_token_secret(_access_token_secret);
 	}
 
-	std::future<Client::ResultType> Client::request(const parameters::ITwitterParameters &parameters) {
+	std::future<std::unique_ptr<response::ITwitterResponse>> Client::request(const parameters::ITwitterParameters &parameters) {
 		return request(parameters.request_method(), parameters.request_url(), parameters.parameters);
 	}
 
-	std::future<Client::ResultType> Client::request(const parameters::RequestMethod &method, const std::string &url, const parameters::RequestParams &parameters) {
+	std::future<std::unique_ptr<response::ITwitterResponse>> Client::request(const parameters::RequestMethod &method, const std::string &url, const parameters::RequestParams &parameters) {
 		return std::async(std::launch::async, &Client::request_internal, this, method, url, parameters);
 	}
 
-	Client::ResultType Client::request_internal(const parameters::RequestMethod &method, const std::string &url, const parameters::RequestParams &parameters) const
+	std::unique_ptr<response::ITwitterResponse> Client::request_internal(const parameters::RequestMethod &method, const std::string &url, const parameters::RequestParams &parameters) const
 	{
 		CURL* curl;
 		CURLcode res;
@@ -64,7 +65,7 @@ namespace azha {
 
 		curl_easy_setopt(curl, CURLOPT_HTTPHEADER, chunk);
 		curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
-		curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
+//		curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
 
 		std::string parameter_string;
 		if(method == parameters::RequestMethod::POST) {
@@ -90,6 +91,9 @@ namespace azha {
 		char *content_type;
 		curl_easy_getinfo(curl, CURLINFO_CONTENT_TYPE, &content_type);
 		bool contents_is_html = strncmp(content_type, "text/html;charset=utf-8", sizeof(content_type)) == 0;
+		
+		uint64_t http_code = 0;
+		curl_easy_getinfo(curl, CURLINFO_HTTP_CODE, &http_code);
 
 		curl_easy_cleanup(curl);
 		curl_slist_free_all(chunk);
@@ -97,10 +101,19 @@ namespace azha {
 		free(data.memory);
 
 		if(contents_is_html) {
-			return parse_query_string(response);
+			auto q = parse_query_string(response);
+			return std::unique_ptr<response::OAuth>(new response::OAuth());
 		}
-
-		return parameters::RequestParams();
+		
+		rapidjson::Document d;
+		d.Parse(response.c_str());
+		
+		if(http_code == 200) {
+			
+		}
+		else {
+			return std::unique_ptr<response::Errors>(new response::Errors(d.GetObject()));
+		}
 	}
 
 	std::unordered_map<std::string, std::string> &&Client::parse_query_string(const std::string &query_string) {

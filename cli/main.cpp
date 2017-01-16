@@ -35,7 +35,9 @@ int main() {
 
 	azha::parameters::POST::Statuses::UpdateParameters update_param;
 	update_param.status("");
-	const auto &status_response = client->request(update_param).get();
+	auto status_response = dynamic_cast<azha::response::OAuth*>(client->request(update_param).get().get());
+	
+	std::cout << status_response << std::endl;
 
 	std::cout << "ended" << std::endl;
 

@@ -22,8 +22,6 @@ namespace azha {
 	
 	class Client {
 	public:
-		using ResultType = std::unordered_map<std::string, std::string>;
-
 		struct MemoryStruct {
 			char *memory;
 			size_t size;
@@ -35,8 +33,8 @@ namespace azha {
 		void consumer_key(const std::string &_consumer_key, const std::string &_consumer_secret);
 		void access_token(const std::string &_access_token, const std::string &_access_token_secret);
 		
-		std::future<ResultType> request(const parameters::ITwitterParameters &parameters);
-		std::future<ResultType> request(const parameters::RequestMethod &method, const std::string &url, const parameters::RequestParams &parameters);
+		std::future<std::unique_ptr<response::ITwitterResponse>> request(const parameters::ITwitterParameters &parameters);
+		std::future<std::unique_ptr<response::ITwitterResponse>> request(const parameters::RequestMethod &method, const std::string &url, const parameters::RequestParams &parameters);
 	private:
 		std::unique_ptr<OAuth> _oauth;
 		
@@ -44,7 +42,7 @@ namespace azha {
 		
 		static std::unordered_map<std::string, std::string> &&parse_query_string(const std::string &query_string);
 		static std::string parameter_string(const parameters::RequestParams &parameters);
-		ResultType request_internal(const parameters::RequestMethod &method, const std::string &url, const parameters::RequestParams &parameters) const;
+		std::unique_ptr<response::ITwitterResponse> request_internal(const parameters::RequestMethod &method, const std::string &url, const parameters::RequestParams &parameters) const;
 	};
 }
 

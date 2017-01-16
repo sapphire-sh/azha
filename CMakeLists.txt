@@ -3,10 +3,12 @@ project(azha C CXX)
 
 set(SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 set(INC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
+set(EXT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/ext)
 
 set(AZHA_INC_DIRS
 	${INC_DIR}
 	${SRC_DIR}
+	${EXT_DIR}/rapidjson/include
 )
 
 list(APPEND AZHA_SRCS
@@ -40,6 +42,8 @@ list(APPEND AZHA_SRCS
 	${INC_DIR}/parameters.users.hpp
 	${INC_DIR}/response.hpp
 	${INC_DIR}/response.interface.hpp
+	${INC_DIR}/response.errors.hpp
+	${INC_DIR}/response.oauth.hpp
 	${INC_DIR}/response.coordinates.hpp
 	${INC_DIR}/response.entities.hpp
 	${INC_DIR}/response.places.hpp
