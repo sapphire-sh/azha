@@ -46,8 +46,17 @@ list(APPEND AZHA_SRCS
 	${INC_DIR}/response.tweet.hpp
 	${INC_DIR}/response.user.hpp
 	${INC_DIR}/base64.hpp
-	${SRC_DIR}/base64.cpp
 )
+
+find_package(Boost REQUIRED)
+if(Boost_FOUND)
+	list(APPEND AZHA_INC_DIRS
+		${Boost_INCLUDE_DIRS}
+	)
+	list(APPEND AZHA_LIBS
+		${Boost_LIBRARIES}
+	)
+endif()
 
 find_package(CURL REQUIRED)
 if(CURL_FOUND)

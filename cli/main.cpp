@@ -34,7 +34,7 @@ int main() {
 	client->access_token("529303031-ze9rALRIGgbxhyM8gwB9plIuhlqehosuXDmMlXNZ", "vz6fXJDTNpLw5rfS1fhndkc8KSXLoxJBtdt06BA3HqOMH");
 
 	azha::parameters::POST::Statuses::UpdateParameters update_param;
-	update_param.status("");
+	update_param.status("test");
 	const auto &status_response = client->request(update_param).get();
 
 	std::cout << "ended" << std::endl;

@@ -1,12 +1,15 @@
 #include <ctime>
 #include <map>
 #include <sstream>
+#include <iostream>
 
+#include <boost/archive/iterators/base64_from_binary.hpp>
+#include <boost/archive/iterators/insert_linebreaks.hpp>
+#include <boost/archive/iterators/transform_width.hpp>
 #include <curl/curl.h>
 #include <openssl/hmac.h>
 #include <openssl/evp.h>
 
-#include "base64.hpp"
 #include "oauth.hpp"
 #include <memory>
 
@@ -85,7 +88,7 @@ namespace azha {
 		auto data = signature_base_string(method, url, parameters);
 
 		unsigned char* result;
-		unsigned int len = 20;
+		unsigned int len = 21;
 
 		result = static_cast<unsigned char*>(malloc(sizeof(char) * len));
 
@@ -96,9 +99,17 @@ namespace azha {
 		HMAC_Update(HMAC_CTX_WRAP_PTR(ctx), reinterpret_cast<const unsigned char*>(data.c_str()), static_cast<int>(data.length()));
 		HMAC_Final(HMAC_CTX_WRAP_PTR(ctx), result, &len);
 		HMAC_CTX_WRAP_CLEANUP(ctx);
-
-		auto signature = base64_encode(result, len);
+		
+		using namespace boost::archive::iterators;
+		
+		typedef insert_linebreaks<base64_from_binary<transform_width<const unsigned char *, 6, 8>>, 76> base64Iterator;
+		
+		auto signature = std::string(base64Iterator(&result[0]), base64Iterator(&result[0] + 20));
 		free(result);
+		
+		signature.push_back('=');
+		
+		std::cout << signature << std::endl;
 
 		return signature;
 	}
