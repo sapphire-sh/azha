@@ -45,7 +45,6 @@ list(APPEND AZHA_SRCS
 	${INC_DIR}/response.places.hpp
 	${INC_DIR}/response.tweet.hpp
 	${INC_DIR}/response.user.hpp
-	${INC_DIR}/base64.hpp
 )
 
 find_package(Boost REQUIRED)
